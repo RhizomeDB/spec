@@ -54,14 +54,14 @@ TODO: mention open world assumption
 
 ## 2.1 Types
 
-PomoDB is designed to be run within WebAssembly, and so its types and their encodings are informed by the format. See the [WebAssembly specification](https://webassembly.github.io/spec/core/appendix/index-types.html) for more information.
+PomoDB is designed to be run within WebAssembly, and so its types and their encodings are informed by the format. See the [WebAssembly specification][Wasm Types] for more information.
 
 Note, however, that only some types are supported as PomoDB primitives. These are:
 
-- [Numbers](https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype)
-- [Opaque Reference Types](https://webassembly.github.io/spec/core/syntax/types.html#reference-types)
+- [Wasm Numbers]
+- [Wasm Opaque Reference Types]
 
-As WebAssembly does not define common types like booleans or strings, these are handled using opaque reference types, and more information is available in the [serialization](pomo_db/serialization.md) specification.
+As WebAssembly does not define common types like booleans or strings, these are handled using opaque reference types, and more information is available in the [serialization] specification.
 
 TODO: Update the above reference once that data exists
 
@@ -110,6 +110,11 @@ TODO: Update CRDT link once that info is described somewhere
 ## 2.5 Provenance Tracking
 
 TODO: [See notes](https://discord.com/channels/478735028319158273/1033502043656171561/1035339517021921280)
+  - Content entanglement
+  - e.g. `cartesianProduct(X, Y) :- X := left(...), Y := right(...)`
+  - Not useful if you want to capture the provenance of `left` and `right`
+  - Likely want to accumulate provenance across joins
+    - FWIW: expede agrees
 
 ## 2.6 Query Engine
 
@@ -157,12 +162,17 @@ Implementations MAY also support user defined sinks, such as to facilitate the i
 
 TODO: Introduce + link Brooke's upcoming work on persistence + encryption
 
+<!-- Links -->
+
 [CRDTs]: pomo_db/CRDTs.md
 [PACELC]: https://en.wikipedia.org/wiki/PACELC_theorem
-[PomoFlow](pomo_db/pomo_flow.md)
+[PomoFlow]: pomo_db/pomo_flow.md
 [PomoFlow]: /pomo_db/pomo_flow.md
-[PomoLogic](pomo_db/pomo_logic.md)
+[PomoLogic]: pomo_db/pomo_logic.md
 [PomoRA]: pomo_db/pomo_ra.md
+[Wasm Numbers]: https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype
+[Wasm Opaque Reference Types]: https://webassembly.github.io/spec/core/syntax/types.html#reference-types
+[Wasm Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
 [content addressing]: #24-content-addressing
 [relation]: #22-relation
 [serialization]: ./pomo_db/serialization.md
