@@ -32,11 +32,11 @@ PomoDB is a content-addressable database. It enables far-edge deployments (such 
 
 ## 1.1 Motivation
 
-While existing databases increasingly treat network partitions as unavoidable disturbances of a network, many mitigate these disturbances under a model that either assumes they'll be bounded in length, or by allowing them to impact the availability of some nodes in the network.
+While existing databases increasingly treat network partitions as unavoidable disturbances to uptime, many mitigate these situations under a model that either assumes they will be bounded in length, or by allowing them to have some or all nodes cease operation. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability. 
 
-Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability. These environments also often involve dynamic network topologies made up of heterogenous peers, for which common definitions of consistency may not apply.
+These environments also often involve dynamic network topologies made up of heterogenous peers, for which common definitions of consistency may not apply. In this context, continued operation is not just desirable, but enforcing continuous consistency between all peers is a nonsense propositoin
 
-PomoDB addresses these constraints through its query engine, whose semantics guarantee eventual consistency across peers with access to the same sources of data. These guarantees are preserved through changes to a peer's access to data, and mean that PomoDB is able to act as a sound foundation for globally distributed data with an indeterminate number of transient peers with varied access patterns.
+PomoDB addresses these constraints with query engine semantics that guarantees eventual consistency across peers with access to the relevant data. These guarantees are preserved through changes to a peer's access to data, and mean that PomoDB is able to act as a sound foundation for globally distributed data with an indeterminate number of transient peers with varied access patterns.
 
 ## 1.2 Insights
 
@@ -49,6 +49,8 @@ TODO: discuss location independence
 TODO: discuss CALM Theorem and its connection with Datalog
 
 # 2. Design
+
+TODO: mention open world assumption
 
 ## 2.1 Types
 
@@ -154,3 +156,7 @@ Implementations MAY also support user defined sinks, such as to facilitate the i
 ## 2.10 Storage
 
 TODO: Introduce + link Brooke's upcoming work on persistence + encryption
+
+
+
+[PACELC]: https://en.wikipedia.org/wiki/PACELC_theorem
