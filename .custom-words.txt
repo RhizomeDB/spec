@@ -134,6 +134,7 @@ intra
 ipfs
 iteratively
 labelled
+langle
 libp
 ln
 mTLS
@@ -142,6 +143,7 @@ optimality
 persistence
 preorder
 probabilistically
+rangle
 requestor
 resampling
 rgb
