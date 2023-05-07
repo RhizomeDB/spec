@@ -71,11 +71,9 @@ A relation is a set of tuples, where each component of the tuple is called an at
 
 A n-ary relation contains n-tuples, which can each be written:
 
-```
-(a1: v1, a2: v2, ..., an: vn)
-```
+$\langle a_1: v_1, a_2: v:2, \dots , a_n: v_n \rangle$
 
-Where `a1, a2, ..., an` give the names of each attribute, and `v1, v2, ..., vn` their values.
+Where $a_1, a_2, \dots , a_n$ give the names of each attribute, and $v_1, v_2, \dots , v_n`$ are their values.
 
 ### 2.2.1 CID Attribute
 
@@ -114,7 +112,7 @@ TODO: [See notes](https://discord.com/channels/478735028319158273/10335020436561
   - e.g. `cartesianProduct(X, Y) :- X := left(...), Y := right(...)`
   - Not useful if you want to capture the provenance of `left` and `right`
   - Likely want to accumulate provenance across joins
-    - FWIW: expede agrees
+    - FWIW: expede agrees, at least on first reading
 
 ## 2.6 Query Engine
 
