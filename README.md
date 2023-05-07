@@ -34,7 +34,7 @@ PomoDB is a content-addressable database. It enables far-edge deployments (such 
 
 While existing databases increasingly treat network partitions as unavoidable disturbances to uptime, many mitigate these situations under a model that either assumes they will be bounded in length, or by allowing them to have some or all nodes cease operation. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability. 
 
-These environments also often involve dynamic network topologies made up of heterogenous peers, for which common definitions of consistency may not apply. In this context, continued operation is not just desirable, but enforcing continuous consistency between all peers is a nonsense propositoin
+These environments also often involve dynamic network topologies made up of heterogenous peers, for which common definitions of consistency may not apply. In this context, continued operation is not just desirable, but enforcing continuous consistency between all peers is a nonsense proposition
 
 PomoDB addresses these constraints with query engine semantics that guarantees eventual consistency across peers with access to the relevant data. These guarantees are preserved through changes to a peer's access to data, and mean that PomoDB is able to act as a sound foundation for globally distributed data with an indeterminate number of transient peers with varied access patterns.
 
