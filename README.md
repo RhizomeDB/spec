@@ -79,7 +79,7 @@ Where `a1, a2, ..., an` give the names of each attribute, and `v1, v2, ..., vn` 
 
 ### 2.2.1 CID Attribute
 
-Each tuple within a relation also has a [content identifier](#24-content-addressing) (CID).
+Each tuple within a relation also has a [content identifier][content addressing] (CID).
 
 This CID can be accessed through a special control attribute denoted as `$CID`: however implementations are RECOMMENDED to use their type system to differentiate between such attributes.
 
@@ -97,13 +97,13 @@ PomoDB timestamps form a logical clock and hold no meaning to any other instance
 
 ## 2.4 Content Addressing
 
-As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a content addressing scheme is leveraged, and tuples are associated with a content ID (CID) computed from their structure. The details behind this computation are available in [serialization](pomo_db/serialization.md).
+As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a content addressing scheme is leveraged, and tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
 
 The choice of CIDs here, rather than more common choices, like auto incrementing IDs or UUIDs, reflects PomoDB's goals in targeting distributed and decentralized environments, where coordination around the allocation of IDs can't be guaranteed, and where resilience against malicious and byzantine actors is required.
 
 Since content addressing schemes are backed by cryptographically secure hash functions, their use here prevents forgery of IDs by attackers, and guarantees that CID-based dependencies between tuples will be acyclic.
 
-These properties are further leveraged in the design and use of byzantine-fault tolerant CRDTs, as described in [CRDTs](pomo_db/CRDTs.md).
+These properties are further leveraged in the design and use of byzantine-fault tolerant CRDTs, as described in [CRDTs].
 
 TODO: Update CRDT link once that info is described somewhere
 
@@ -113,11 +113,11 @@ TODO: [See notes](https://discord.com/channels/478735028319158273/10335020436561
 
 ## 2.6 Query Engine
 
-PomoDB has no specified query language. Instead, an intermediate representation based on the relational algebra, named [PomoRA](pomo_db/pomo_ra.md), is defined.
+PomoDB has no specified query language. Instead, an intermediate representation based on the relational algebra, named [PomoRA], is defined.
 
 Implementations MAY define their own user-facing query language, but they are RECOMMENDED to treat PomoRA as a common compilation target for all such languages.
 
-An OPTIONAL Datalog variant, named [PomoLogic](pomo_db/pomo_logic.md), is also described, along with an OPTIONAL runtime for PomoRA, named [PomoFlow](pomo_db/pomo_flow.md).
+An OPTIONAL Datalog variant, named [PomoLogic], is also described, along with an OPTIONAL runtime for PomoRA, named [PomoFlow].
 
 ## 2.7 Evaluation
 
@@ -125,21 +125,21 @@ Evaluation of PomoDB queries proceeds in timesteps, called epochs, which each co
 
 The details behind this computation are runtime specific, however all runtimes MUST provide the following additional guarantees.
 
-Each epoch is denoted by the timestamp succeeding the last, and begins by scheduling the program's [sources](#28-sources) for evaluation. These sources MAY run in any order, however any operations over their resulting contents MUST be deferred until their completion.
+Each epoch is denoted by the timestamp succeeding the last, and begins by scheduling the program's [sources] for evaluation. These sources MAY run in any order, however any operations over their resulting contents MUST be deferred until their completion.
 
-Upon computing a relation's fixed point, any [sinks](#29-sinks) over that relation SHOULD be scheduled to run over the relation's contents, and evaluation of those sinks MUST be completed before evaluating the next epoch.
+Upon computing a relation's fixed point, any [sinks] over that relation SHOULD be scheduled to run over the relation's contents, and evaluation of those sinks MUST be completed before evaluating the next epoch.
 
-PomoDB queries MAY be implemented over incremental computations, in which case each epoch is RECOMMENDED to operate over deltas of the database, wherever possible. [PomoFlow](pomo_flow.md) is an OPTIONAL runtime with such capabilities.
+PomoDB queries MAY be implemented over incremental computations, in which case each epoch is RECOMMENDED to operate over deltas of the database, wherever possible. [PomoFlow] is an OPTIONAL runtime with such capabilities.
 
 ## 2.8 Sources
 
 Sources act as ingress points for a PomoDB query, and introduce tuples from the outside world, such as by loading them from a local persistence layer, or by querying them from a remote data source such as IPFS.
 
-Sources can be queried as if they were [relations](#22-relation).
+Sources can be queried as if they were [relation]s.
 
 Implementations MAY define their own sources, but sources SHOULD be non-blocking, and are RECOMMENDED to perform any blocking or IO-intensive operations asynchronously.
 
-Sources MAY emit deltas of tuples, if a runtime able to take advantage of incremental computation is being used, like [PomoFlow](pomo_db/pomo_flow.md).
+Sources MAY emit deltas of tuples, if a runtime able to take advantage of incremental computation is being used, like [PomoFlow].
 
 Implementations MAY also support user defined sources, such as to facilitate the integration of PomoDB into external systems for persistence or communication.
 
@@ -147,7 +147,7 @@ Implementations MAY also support user defined sources, such as to facilitate the
 
 Sinks act as egress points for a PomoDB query, and emit tuples to the outside world for further processing or storage.
 
-Sinks can be inserted into as if they were [relations](#22-relation).
+Sinks can be inserted into as if they were [relation]s.
 
 Implementations MAY define their own sinks, but sinks SHOULD be non-blocking, and are RECOMMENDED to perform any blocking or IO-intensive operations asynchronously.
 
@@ -157,6 +157,14 @@ Implementations MAY also support user defined sinks, such as to facilitate the i
 
 TODO: Introduce + link Brooke's upcoming work on persistence + encryption
 
-
-
+[CRDTs]: pomo_db/CRDTs.md
 [PACELC]: https://en.wikipedia.org/wiki/PACELC_theorem
+[PomoFlow](pomo_db/pomo_flow.md)
+[PomoFlow]: /pomo_db/pomo_flow.md
+[PomoLogic](pomo_db/pomo_logic.md)
+[PomoRA]: pomo_db/pomo_ra.md
+[content addressing]: #24-content-addressing
+[relation]: #22-relation
+[serialization]: ./pomo_db/serialization.md
+[sinks]: #29-sinks
+[sources]: #28-sources
