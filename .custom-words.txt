@@ -79,6 +79,7 @@ UUIDs
 Untimed
 WNFS
 WSS
+Wasm
 WebAssembly
 WebNative
 WebRTC
@@ -116,6 +117,7 @@ encodings
 endian
 equijoin
 equijoins
+expede
 expressivity
 fn
 frac
