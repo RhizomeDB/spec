@@ -51,8 +51,6 @@ Note, however, that only some types are supported as PomoDB primitives. These ar
 
 As WebAssembly does not define common types like booleans or strings, these are handled using opaque reference types, and more information is available in the [serialization] specification.
 
-TODO: Update the above reference once that data exists
-
 ## 2.2 Relation
 
 A relation is a set of tuples, where each component of the tuple is called an attribute, and can be referenced by an attribute name.
