@@ -38,19 +38,7 @@ These environments also often involve dynamic network topologies made up of hete
 
 PomoDB addresses these constraints with query engine semantics that guarantees eventual consistency across peers with access to the relevant data. These guarantees are preserved through changes to a peer's access to data, and mean that PomoDB is able to act as a sound foundation for globally distributed data with an indeterminate number of transient peers with varied access patterns.
 
-## 1.2 Insights
-
-TODO: discuss single system image / subjectivity
-
-TODO: discuss CRDTs / BFT-CRDTs
-
-TODO: discuss location independence
-
-TODO: discuss CALM Theorem and its connection with Datalog
-
 # 2. Design
-
-TODO: mention open world assumption
 
 ## 2.1 Types
 
@@ -103,18 +91,7 @@ Since content addressing schemes are backed by cryptographically secure hash fun
 
 These properties are further leveraged in the design and use of byzantine-fault tolerant CRDTs, as described in [CRDTs].
 
-TODO: Update CRDT link once that info is described somewhere
-
-## 2.5 Provenance Tracking
-
-TODO: [See notes](https://discord.com/channels/478735028319158273/1033502043656171561/1035339517021921280)
-  - Content entanglement
-  - e.g. `cartesianProduct(X, Y) :- X := left(...), Y := right(...)`
-  - Not useful if you want to capture the provenance of `left` and `right`
-  - Likely want to accumulate provenance across joins
-    - FWIW: expede agrees, at least on first reading
-
-## 2.6 Query Engine
+## 2.5 Query Engine
 
 PomoDB has no specified query language. Instead, an intermediate representation based on the relational algebra, named [PomoRA], is defined.
 
@@ -122,7 +99,7 @@ Implementations MAY define their own user-facing query language, but they are RE
 
 An OPTIONAL Datalog variant, named [PomoLogic], is also described, along with an OPTIONAL runtime for PomoRA, named [PomoFlow].
 
-## 2.7 Evaluation
+## 2.6 Evaluation
 
 Evaluation of PomoDB queries proceeds in timesteps, called epochs, which each compute a least fixed point over a batch of changes to the database.
 
@@ -134,7 +111,7 @@ Upon computing a relation's fixed point, any [sinks] over that relation SHOULD b
 
 PomoDB queries MAY be implemented over incremental computations, in which case each epoch is RECOMMENDED to operate over deltas of the database, wherever possible. [PomoFlow] is an OPTIONAL runtime with such capabilities.
 
-## 2.8 Sources
+## 2.7 Sources
 
 Sources act as ingress points for a PomoDB query, and introduce tuples from the outside world, such as by loading them from a local persistence layer, or by querying them from a remote data source such as IPFS.
 
@@ -146,7 +123,7 @@ Sources MAY emit deltas of tuples, if a runtime able to take advantage of increm
 
 Implementations MAY also support user defined sources, such as to facilitate the integration of PomoDB into external systems for persistence or communication.
 
-## 2.9 Sinks
+## 2.8 Sinks
 
 Sinks act as egress points for a PomoDB query, and emit tuples to the outside world for further processing or storage.
 
@@ -155,10 +132,6 @@ Sinks can be inserted into as if they were [relation]s.
 Implementations MAY define their own sinks, but sinks SHOULD be non-blocking, and are RECOMMENDED to perform any blocking or IO-intensive operations asynchronously.
 
 Implementations MAY also support user defined sinks, such as to facilitate the integration of PomoDB into external systems for persistence or communication.
-
-## 2.10 Storage
-
-TODO: Introduce + link Brooke's upcoming work on persistence + encryption
 
 <!-- Links -->
 
@@ -174,5 +147,5 @@ TODO: Introduce + link Brooke's upcoming work on persistence + encryption
 [content addressing]: #24-content-addressing
 [relation]: #22-relation
 [serialization]: ./pomo_db/serialization.md
-[sinks]: #29-sinks
-[sources]: #28-sources
+[sinks]: #28-sinks
+[sources]: #27-sources
