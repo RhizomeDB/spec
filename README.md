@@ -1,4 +1,4 @@
-# PomoDB v0.1.0 (Draft)
+# PomoDB v0.1.0
 
 ## Editors
 
@@ -20,18 +20,13 @@
 
 * [Research](RESEARCH.md)
 
-## Links
-
-* [Fission Reactor: Dialog First Look](https://fission.codes/blog/fission-reactor-dialog-first-look/)
-
 # Language
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
-
 # Abstract
 
-PomoDB is a content-addressable database designed for use in far-edge deployments, such as on IoT or consumer devices. It targets this use case by enabling peers to synchronize heterogenous sets of end-to-end encrypted data in an eventually consistent manner.
+PomoDB is a content-addressable database. It enables far-edge deployments (such as IoT and consumer devices) by synchronize heterogenous sets of end-to-end encrypted data between peers in an eventually consistent manner.
 
 # 1. Introduction
 
