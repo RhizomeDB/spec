@@ -1,32 +1,32 @@
-# PomoDB v0.1.0
+# The Postmodern Database (PomoDB) v0.1.0
 
 ## Editors
 
-* [Quinn Wilton](https://github.com/QuinnWilton), [Fission](https://fission.codes)
-* [Brooklyn Zelenka](https://github.com/expede), [Fission](https://fission.codes)
+* [Quinn Wilton], [Fission Codes]
+* [Brooklyn Zelenka], [Fission Codes]
 
 ## Authors
 
-* [Quinn Wilton](https://github.com/QuinnWilton), [Fission](https://fission.codes)
-* [Brooklyn Zelenka](https://github.com/expede), [Fission](https://fission.codes)
+* [Quinn Wilton], [Fission Codes]
+* [Brooklyn Zelenka], [Fission Codes]
 
 ## Specs
 
-* [PomoFlow](pomo_db/pomo_flow.md)
-* [PomoLogic](pomo_db/pomo_logic.md)
-* [PomoRA](pomo_db/pomo_ra.md)
+* [Pomo Flow]
+* [Pomo Logic]
+* [Pomo RA]
 
 ## Appendices
 
-* [Research](RESEARCH.md)
+* [Research][Pomo Research]
 
 # Language
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119].
 
 # Abstract
 
-PomoDB is a content-addressable database. It enables far-edge deployments (such as IoT and consumer devices) by synchronize heterogenous sets of end-to-end encrypted data between peers in an eventually consistent manner.
+PomoDB is a [content-addressable] database. It enables far-edge deployments (such as IoT and consumer devices) by synchronize heterogenous sets of end-to-end encrypted data between peers in an eventually consistent manner.
 
 # 1. Introduction
 
@@ -42,7 +42,7 @@ PomoDB addresses these constraints with query engine semantics that guarantees e
 
 ## 2.1 Types
 
-PomoDB is designed to be run within WebAssembly, and so its types and their encodings are informed by the format. See the [WebAssembly specification][Wasm Types] for more information.
+PomoDB is designed to be run within WebAssembly, and so its types and their encodings are informed by the format. See the [WebAssembly specification][Wasm Primitive Types] for more information.
 
 Note, however, that only some types are supported as PomoDB primitives. These are:
 
@@ -55,7 +55,7 @@ As WebAssembly does not define common types like booleans or strings, these are 
 
 A relation is a set of tuples, where each component of the tuple is called an attribute, and can be referenced by an attribute name.
 
-A n-ary relation contains n-tuples, which can each be written:
+An n-ary relation contains n-tuples, which can each be written:
 
 $\langle a_1: v_1, a_2: v_2, \dots , a_n: v_n \rangle$
 
@@ -131,19 +131,148 @@ Implementations MAY define their own sinks, but sinks SHOULD be non-blocking, an
 
 Implementations MAY also support user defined sinks, such as to facilitate the integration of PomoDB into external systems for persistence or communication.
 
+# 3 Components
+
+PomoDB is composed of the following layers:
+
+## 3.1 Hard Dependencies
+
+``` 
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                         PomoDB                          │
+│                           SDK                           │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│                 │ │                 │ │                 │
+│   Query DSL 1   │ │   Query DSL 2   │ │   Query DSL 3   │
+│                 │ │                 │ │                 │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                        Compiler                         │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│                 │ │                 │ │                 │
+│   Pomo Logic    │ │   Pomo RA       │ │   Pomo Flow     │
+│   Datalog       │ │  Relational     │ │  Dataflow       │
+│                 │ │                 │ │                 │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                        Pomo Store                       │
+│                        EDB & IDB                        │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                Abstract Object Store                    │
+│                Content Addressed Data                   │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+## 3.2 Chosen Composition
+
+``` 
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                         PomoDB                          │
+│                           SDK                           │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│                 │ │                 │ │                 │
+│   Query DSL 1   │ │   Query DSL 2   │ │   Query DSL 3   │
+│                 │ │                 │ │                 │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                       Pomo Logic                        │
+│                       Datalog IR                        │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                        Pomo RA                          │
+│                     Query Planner                       │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                        Pomo Flow                        │
+│              Differential Dataflow Engine               │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                        Pomo Store                       │
+│                        EDB & IDB                        │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+┌───────────────────────────┐ ┌───────────────────────────┐
+│                           │ │                           │
+│   WebNative File System   │ │      In-Memory Store      │
+│        Synced Store       │ │       Ephemeral Data      │
+│                           │ │                           │
+└───────────────────────────┘ └───────────────────────────┘
+┌─────────────────┐  ┌────────────────────────────────────┐
+│                 │  │                                    │
+│  Remote Store   │  │             Local Store            │
+│                 │  │                                    │
+└─────────────────┘  └────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│                Abstract Object Store                    │
+│                Content Addressed Data                   │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+## 3.1 Pomo Logic
+
+PomoDB is query language agnostic, and implementations MAY define arbitrary query frontends. [PomoLogic] is a variant of Datalog, designed for recursive query processing.
+
+## 3.2 Pomo Flow
+
+[PomoFlow] is a dataflow runtime for PomoDB. This design is especially suited for incrementalizing programs to efficiently compute over deltas to the input EDB.
+
+## 3.3 Pomo RA
+
+Relational algebra is the theory underpinning relational databases and the query languages against them. It provides a small core language of relational operators that serve as simple building blocks for more complex forms of query processing.
+
+This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
+
+## 3.4 Pomo EDB (materialized data layour)
+
+Always stored as fourples
+
+Variadic
+
 <!-- Links -->
 
 [CRDTs]: pomo_db/CRDTs.md
-[PACELC]: https://en.wikipedia.org/wiki/PACELC_theorem
-[PomoFlow]: pomo_db/pomo_flow.md
-[PomoFlow]: /pomo_db/pomo_flow.md
-[PomoLogic]: pomo_db/pomo_logic.md
-[PomoRA]: pomo_db/pomo_ra.md
 [Wasm Numbers]: https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype
 [Wasm Opaque Reference Types]: https://webassembly.github.io/spec/core/syntax/types.html#reference-types
-[Wasm Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
+[Wasm Primitive Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
 [content addressing]: #24-content-addressing
 [relation]: #22-relation
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
+[RFC 2119]: https://datatracker.ietf.org/doc/html/rfc2119
+[Quinn Wilton]: https://github.com/QuinnWilton
+[Fission Codes]: https://fission.codes
+[Brooklyn Zelenka]: https://github.com/expede
+
+
+
+
+
+FIXME FIXME FIXME
+[Pomo Research]: FIXME
+[Pomo Flow]: FIXME
+[Pomo Logic]: FIXME
+[Pomo RA]: FIXME 

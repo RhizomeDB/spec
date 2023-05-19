@@ -57,6 +57,8 @@ Connecting both concepts is the Herbrand base of `P`, written `B(P)`, containing
 B(P) = EDB ∪ IDB(P)
 ```
 
+FIXME break this out into a datalog guide document
+
 ### Rules
 
 Rules are written:
