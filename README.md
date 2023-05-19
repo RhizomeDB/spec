@@ -2,23 +2,24 @@
 
 ## Editors
 
-* [Quinn Wilton], [Fission Codes]
-* [Brooklyn Zelenka], [Fission Codes]
+- [Quinn Wilton], [Fission Codes]
+- [Brooklyn Zelenka], [Fission Codes]
 
 ## Authors
 
-* [Quinn Wilton], [Fission Codes]
-* [Brooklyn Zelenka], [Fission Codes]
+- [Quinn Wilton], [Fission Codes]
+- [Brooklyn Zelenka], [Fission Codes]
 
-## Specs
+## Dependencies
 
-* [Pomo Flow]
-* [Pomo Logic]
-* [Pomo RA]
+- [IPLD]
+- [Pomo Logic]
+- [Pomo RA]
+- [WebNative File System]
 
 ## Appendices
 
-* [Research][Pomo Research]
+- [Research]
 
 # Language
 
@@ -133,9 +134,35 @@ Implementations MAY also support user defined sinks, such as to facilitate the i
 
 # 3 Components
 
-PomoDB is composed of the following layers:
+PomoDB is composed of several cleanly separated layers. There is a distinction between the hard technical dependencies between these components and the way that this spec has decided to compose them for various pragmaic reasons.
 
-## 3.1 Hard Dependencies
+## 3.1 Components 
+
+### 3.1.1 Pomo Logic
+
+PomoDB is query language agnostic, and implementations MAY define arbitrary query frontends. [PomoLogic] is a variant of Datalog, designed for recursive query processing.
+
+### 3.1.2 Pomo Flow
+
+PomoFlow is a dataflow runtime for PomoDB. This design is especially suited for incrementalizing programs to efficiently compute over deltas to the input EDB.
+
+### 3.1.3 Pomo RA
+
+Relational algebra is the theory underpinning relational databases and the query languages against them. It provides a small core language of relational operators that serve as simple building blocks for more complex forms of query processing.
+
+This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
+
+### 3.1.4 Pomo EDB (materialized data layour)
+
+Always stored as fourples
+
+Variadic
+
+## 3.2 Stack Diagrams
+
+## 3.2.1 Hard Dependencies
+
+The raw dependencies between components in the systems stack as follows:
 
 ``` 
 ┌─────────────────────────────────────────────────────────┐
@@ -156,8 +183,8 @@ PomoDB is composed of the following layers:
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
 │                 │ │                 │ │                 │
-│   Pomo Logic    │ │   Pomo RA       │ │   Pomo Flow     │
-│   Datalog       │ │  Relational     │ │  Dataflow       │
+│     Datalog     │ │    Relational   │ │  Differential   │
+│                 │ │     Algebra     │ │    Dataflow     │
 │                 │ │                 │ │                 │
 └─────────────────┘ └─────────────────┘ └─────────────────┘
 ┌─────────────────────────────────────────────────────────┐
@@ -174,7 +201,9 @@ PomoDB is composed of the following layers:
 └─────────────────────────────────────────────────────────┘
 ```
 
-## 3.2 Chosen Composition
+## 3.2.2 Chosen Composition
+
+PomoDB stacks the layers as follows:
 
 ``` 
 ┌─────────────────────────────────────────────────────────┐
@@ -209,7 +238,7 @@ PomoDB is composed of the following layers:
 ┌─────────────────────────────────────────────────────────┐
 │                                                         │
 │                        Pomo Store                       │
-│                        EDB & IDB                        │
+│                Content Addressed Tuples                 │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌───────────────────────────┐ ┌───────────────────────────┐
@@ -223,56 +252,25 @@ PomoDB is composed of the following layers:
 │  Remote Store   │  │             Local Store            │
 │                 │  │                                    │
 └─────────────────┘  └────────────────────────────────────┘
-┌─────────────────────────────────────────────────────────┐
-│                                                         │
-│                Abstract Object Store                    │
-│                Content Addressed Data                   │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
 ```
-
-## 3.1 Pomo Logic
-
-PomoDB is query language agnostic, and implementations MAY define arbitrary query frontends. [PomoLogic] is a variant of Datalog, designed for recursive query processing.
-
-## 3.2 Pomo Flow
-
-[PomoFlow] is a dataflow runtime for PomoDB. This design is especially suited for incrementalizing programs to efficiently compute over deltas to the input EDB.
-
-## 3.3 Pomo RA
-
-Relational algebra is the theory underpinning relational databases and the query languages against them. It provides a small core language of relational operators that serve as simple building blocks for more complex forms of query processing.
-
-This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
-
-## 3.4 Pomo EDB (materialized data layour)
-
-Always stored as fourples
-
-Variadic
 
 <!-- Links -->
 
+[Brooklyn Zelenka]: https://github.com/expede
 [CRDTs]: pomo_db/CRDTs.md
+[Fission Codes]: https://fission.codes
+[IPLD]: https://ipld.io/specs/
+[Pomo Logic]: https://github.com/RhizomeDB/PomoLogic
+[Pomo RA]: https://github.com/RhizomeDB/PomoRA
+[Quinn Wilton]: https://github.com/QuinnWilton
+[RFC 2119]: https://datatracker.ietf.org/doc/html/rfc2119
+[Research]: https://github.com/RhizomeDB/research
 [Wasm Numbers]: https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype
 [Wasm Opaque Reference Types]: https://webassembly.github.io/spec/core/syntax/types.html#reference-types
 [Wasm Primitive Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
+[WebNative File System]: https://github.com/wnfs-wg/spec
 [content addressing]: #24-content-addressing
 [relation]: #22-relation
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
-[RFC 2119]: https://datatracker.ietf.org/doc/html/rfc2119
-[Quinn Wilton]: https://github.com/QuinnWilton
-[Fission Codes]: https://fission.codes
-[Brooklyn Zelenka]: https://github.com/expede
-
-
-
-
-
-FIXME FIXME FIXME
-[Pomo Research]: FIXME
-[Pomo Flow]: FIXME
-[Pomo Logic]: FIXME
-[Pomo RA]: FIXME 
