@@ -146,7 +146,7 @@ Implementations MAY also support user defined sinks, such as to facilitate the i
 
 # 3 Components
 
-PomoDB is composed of several cleanly separated layers. There is a distinction between the hard technical dependencies between these components and the way that this spec has decided to compose them for various pragmaic reasons.
+PomoDB is composed of several cleanly separated layers. There is a distinction between the hard technical dependencies between these components and the way that this spec has decided to compose them for various pragmatic reasons.
 
 ## 3.1 Components 
 
@@ -166,7 +166,7 @@ This specification describes PomoRA, a representation of the relational algebra 
 
 ### 3.1.4 Pomo EDB (materialized data layour)
 
-Always stored as fourples
+Always stored as quads (4-tuples).
 
 Variadic
 
