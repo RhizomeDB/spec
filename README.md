@@ -33,17 +33,23 @@ PomoDB is a [content-addressable] database. It enables far-edge deployments (suc
 
 ## 1.1 Motivation
 
-While existing databases increasingly treat network partitions as unavoidable disturbances to uptime, many mitigate these situations under a model that either assumes they will be bounded in length, or by allowing them to have some or all nodes cease operation. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability. 
+While existing databases increasingly treat network partitions as unavoidable disturbances to uptime, many mitigate these situations under a model that either assumes they will be bounded in length, or by allowing them to have some or all nodes cease operation. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability.
 
-These environments also often involve dynamic network topologies made up of heterogenous peers, for which common definitions of consistency may not apply. In this context, continued operation is not just desirable, but enforcing continuous consistency between all peers is a nonsense proposition
+Modern environments increasingly involve unstable dynamic network topologies of heterogenous peers for which common definitions of consistency often do not apply. In this context, continued operation is not just desirable, but enforcing continuous consistency between all peers is a meaningless proposition. This begs the question: what if there was [no concept of "primary site"][A Certain Tendency of the Database Community] and all data were considered subjective relative to the viewer.
 
-PomoDB addresses these constraints with query engine semantics that guarantees eventual consistency across peers with access to the relevant data. These guarantees are preserved through changes to a peer's access to data, and mean that PomoDB is able to act as a sound foundation for globally distributed data with an indeterminate number of transient peers with varied access patterns.
+## 1.2 Approach
+
+PomoDB addresses the above constraints with query engine semantics that guarantees eventual consistency across peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
+
+## 1.3 Environments
+
+PomoDB is designed to run anywhere, be transport agnostic, and continue to operate when disconnected from the network. Of particular interest are operating in browsers, mobile applications, and IoT devices.
 
 # 2. Design
 
 ## 2.1 Types
 
-PomoDB is designed to be run within WebAssembly, and so its types and their encodings are informed by the format. See the [WebAssembly specification][Wasm Primitive Types] for more information.
+PomoDB is designed to compile well to [WebAssembly], and so its types and their encodings are informed by the format. See the [WebAssembly specification][Wasm Primitive Types] for more information.
 
 Note, however, that only some types are supported as PomoDB primitives. These are:
 
@@ -256,6 +262,7 @@ PomoDB stacks the layers as follows:
 
 <!-- Links -->
 
+[A Certain Tendency of the Database Community]: https://arxiv.org/pdf/1510.08473.pdf
 [Brooklyn Zelenka]: https://github.com/expede
 [CRDTs]: pomo_db/CRDTs.md
 [Fission Codes]: https://fission.codes
@@ -274,3 +281,4 @@ PomoDB stacks the layers as follows:
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
+[WebAssembly]: https://webassembly.org/
