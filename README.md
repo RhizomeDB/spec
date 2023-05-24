@@ -43,7 +43,13 @@ PomoDB addresses the above constraints with query engine semantics that guarante
 
 ## 1.3 Environments
 
-PomoDB is designed to run anywhere, be transport agnostic, and continue to operate when disconnected from the network. Of particular interest are operating in browsers, mobile applications, and IoT devices.
+PomoDB is designed to be:
+
+- Run anywhere
+- Transport agnostic
+- Operate when disconnected from the network
+
+Of particular interest are operating in browsers, mobile applications, and IoT devices.
 
 # 2. Design
 
@@ -172,26 +178,38 @@ The raw dependencies between components in the systems stack as follows:
 
 ``` 
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                         PomoDB                          │
 │                           SDK                           │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│                 │ │                 │ │                 │
 │   Query DSL 1   │ │   Query DSL 2   │ │   Query DSL 3   │
+│                 │ │                 │ │                 │
 └─────────────────┘ └─────────────────┘ └─────────────────┘
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                        Compiler                         │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│                 │ │                 │ │                 │
 │     Datalog     │ │    Relational   │ │  Differential   │
 │                 │ │     Algebra     │ │    Dataflow     │
+│                 │ │                 │ │                 │
 └─────────────────┘ └─────────────────┘ └─────────────────┘
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                        Pomo Store                       │
 │                        EDB & IDB                        │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                Abstract Object Store                    │
 │                Content Addressed Data                   │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -201,34 +219,50 @@ PomoDB stacks the layers as follows:
 
 ``` 
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                         PomoDB                          │
 │                           SDK                           │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│                 │ │                 │ │                 │
 │   Query DSL 1   │ │   Query DSL 2   │ │   Query DSL 3   │
+│                 │ │                 │ │                 │
 └─────────────────┘ └─────────────────┘ └─────────────────┘
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                       Pomo Logic                        │
 │                       Datalog IR                        │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                        Pomo RA                          │
 │                     Query Planner                       │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                        Pomo Flow                        │
 │              Differential Dataflow Engine               │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────┐
+│                                                         │
 │                        Pomo Store                       │
 │                Content Addressed Tuples                 │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ┌───────────────────────────┐ ┌───────────────────────────┐
+│                           │ │                           │
 │   WebNative File System   │ │      In-Memory Store      │
 │        Synced Store       │ │       Ephemeral Data      │
+│                           │ │                           │
 └───────────────────────────┘ └───────────────────────────┘
 ┌─────────────────┐  ┌────────────────────────────────────┐
+│                 │  │                                    │
 │  Remote Store   │  │             Local Store            │
+│                 │  │                                    │
 └─────────────────┘  └────────────────────────────────────┘
 ```
 
