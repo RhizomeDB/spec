@@ -59,10 +59,26 @@ PomoDB is designed to compile well to [WebAssembly], and so its types and their 
 
 Note, however, that only some types are supported as PomoDB primitives. These are:
 
+FIXME!
+
 - [Wasm Numbers]
 - [Wasm Opaque Reference Types]
 
 As WebAssembly does not define common types like booleans or strings, these are handled using opaque reference types, and more information is available in the [serialization] specification.
+
+FIXME!
+
+The primitive types that the EDB supports are as follows:
+
+``` haskell
+type PomoPrim
+  = PomoLink     CID
+  | PomoEntityID Binary
+  | PomoInt      Integer
+  | PomoFloat    Double
+  | PomoText     UTF8
+  | PomoBin      Binary
+```
 
 ## 2.2 Relation
 
@@ -73,6 +89,19 @@ An n-ary relation contains n-tuples, which can each be written:
 $\langle a_1: v_1, a_2: v_2, \dots , a_n: v_n \rangle$
 
 Where $a_1, a_2, \dots , a_n$ give the names of each attribute, and $v_1, v_2, \dots , v_n$ are their values.
+
+### 2.2.1 Quads
+
+The extensional database MUST only store quads (4-tuples) in EVAC format. All fields are REQUIRED, though the Causal set MAY be empty.
+
+| Field         | Type         | Description                                        |
+|---------------|--------------|----------------------------------------------------|
+| **E**ntity    | `EntityID`   | Entity ID                                          |
+| **V**alue     | [`PomoPrim`] | The (primitive) value being associated             |
+| **A**ttribute | `String`     | The name of the value's relationship to the entity |
+| **C**ausal    | `Set CID`    | Any causal links                                   |
+
+Each quad MUST include an implied CID.
 
 ### 2.2.1 CID Attribute
 
@@ -150,55 +179,6 @@ PomoDB is composed of several cleanly separated layers. There is a distinction b
 
 ## 3.1 Components 
 
-### 3.1.1 Pomo Logic
-
-PomoDB is query language agnostic, and implementations MAY define arbitrary query frontends. [PomoLogic] is a variant of Datalog, designed for recursive query processing.
-
-### 3.1.2 Pomo Flow
-
-PomoFlow is a dataflow runtime for PomoDB. This design is especially suited for incrementalizing programs to efficiently compute over deltas to the input EDB.
-
-### 3.1.3 Pomo RA
-
-Relational algebra is the theory underpinning relational databases and the query languages against them. It provides a small core language of relational operators that serve as simple building blocks for more complex forms of query processing.
-
-This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
-
-### 3.1.4 Pomo Extensional Database (EDB)
-
-The data layout stored to disk. This is the "ground truth" database, from which all other knowledge is derived via queries.
-
-#### 3.1.4.1 Primitive Types
-
-The primitive types that the EDB supports are as follows:
-
-``` haskell
-type PomoPrim
-  = PomoLink     CID
-  | PomoEntityID Binary
-  | PomoInt      Integer
-  | PomoFloat    Double
-  | PomoText     UTF8
-  | PomoBin      Binary
-```
-
-#### 3.1.4.2 Quads
-
-The EDB MUST only store quads (4-tuples) in EVAC format. All fields are REQUIRED, though the Causal set MAY be empty.
-
-| Field         | Type         | Description                                        |
-|---------------|--------------|----------------------------------------------------|
-| **E**ntity    | `EntityID`   | Entity ID                                          |
-| **V**alue     | [`PomoPrim`] | The (primitive) value being associated             |
-| **A**ttribute | `String`     | The name of the value's relationship to the entity |
-| **C**ausal    | `Set CID`    | Any causal links                                   |
-
-Each quad MUST include an implied CID.
-
-## 3.2 Stack Diagrams
-
-## 3.2.1 Hard Dependencies
-
 The raw dependencies between components in the systems stack as follows:
 
 ``` 
@@ -238,9 +218,7 @@ The raw dependencies between components in the systems stack as follows:
 └─────────────────────────────────────────────────────────┘
 ```
 
-## 3.2.2 Chosen Composition
-
-PomoDB stacks the layers as follows:
+PomoDB choses to implement this as a the following stack:
 
 ``` 
 ┌─────────────────────────────────────────────────────────┐
@@ -290,6 +268,27 @@ PomoDB stacks the layers as follows:
 │                 │  │                                    │
 └─────────────────┘  └────────────────────────────────────┘
 ```
+
+### 3.1.1 Pomo Logic
+
+PomoDB is query language agnostic, and implementations MAY define arbitrary query frontends. [PomoLogic] is a variant of Datalog, designed for recursive query processing.
+
+### 3.1.2 Pomo Flow
+
+PomoFlow is a dataflow runtime for PomoDB. This design is especially suited for incrementalizing programs to efficiently compute over deltas to the input EDB.
+
+### 3.1.3 Pomo RA
+
+Relational algebra is the theory underpinning relational databases and the query languages against them. It provides a small core language of relational operators that serve as simple building blocks for more complex forms of query processing.
+
+This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
+
+# 4 Extensional Database
+
+The data layout stored to disk is the "extensional database" (EDB). This is the "ground truth" database, from which all other knowledge is derived via queries.
+
+#### 3.1.4.1 Primitive Types
+
 
 <!-- Links -->
 
