@@ -164,7 +164,9 @@ Relational algebra is the theory underpinning relational databases and the query
 
 This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
 
-### 3.1.4 Pomo EDB (materialized data layour)
+### 3.1.4 Pomo Extensional Database 
+
+The data layout stored to disk. This is the "ground truth" database, from which all other knowledge is derived via queries.
 
 Always stored as quads (4-tuples).
 

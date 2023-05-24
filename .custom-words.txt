@@ -1,5 +1,4 @@
 AKE
-pomo
 Antijoin
 Arity
 BFT
@@ -78,6 +77,7 @@ UI
 URI
 UUIDs
 Untimed
+Variadic
 WNFS
 WSS
 Wasm
@@ -142,6 +142,7 @@ mTLS
 memoization
 optimality
 persistence
+pomo
 preorder
 probabilistically
 rangle
