@@ -164,13 +164,36 @@ Relational algebra is the theory underpinning relational databases and the query
 
 This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
 
-### 3.1.4 Pomo Extensional Database 
+### 3.1.4 Pomo Extensional Database (EDB)
 
 The data layout stored to disk. This is the "ground truth" database, from which all other knowledge is derived via queries.
 
-Always stored as quads (4-tuples).
+#### 3.1.4.1 Primitive Types
 
-Variadic
+The primitive types that the EDB supports are as follows:
+
+``` haskell
+type PomoPrim
+  = PomoLink     CID
+  | PomoEntityID Binary
+  | PomoInt      Integer
+  | PomoFloat    Double
+  | PomoText     UTF8
+  | PomoBin      Binary
+```
+
+#### 3.1.4.2 Quads
+
+The EDB MUST only store quads (4-tuples) in EVAC format. All fields are REQUIRED, though the Causal set MAY be empty.
+
+| Field         | Type         | Description                                        |
+|---------------|--------------|----------------------------------------------------|
+| **E**ntity    | `EntityID`   | Entity ID                                          |
+| **V**alue     | [`PomoPrim`] | The (primitive) value being associated             |
+| **A**ttribute | `String`     | The name of the value's relationship to the entity |
+| **C**ausal    | `Set CID`    | Any causal links                                   |
+
+Each quad MUST include an implied CID.
 
 ## 3.2 Stack Diagrams
 
@@ -283,10 +306,11 @@ PomoDB stacks the layers as follows:
 [Wasm Numbers]: https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype
 [Wasm Opaque Reference Types]: https://webassembly.github.io/spec/core/syntax/types.html#reference-types
 [Wasm Primitive Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
+[WebAssembly]: https://webassembly.org/
 [WebNative File System]: https://github.com/wnfs-wg/spec
+[`PomoPrim`]: #3141-primitive-types
 [content addressing]: #24-content-addressing
 [relation]: #22-relation
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
-[WebAssembly]: https://webassembly.org/
