@@ -263,6 +263,28 @@ data Fact = Fact
   }
 ```
 
+``` mermaidjs
+flowchart TB
+    entityCA{{123}} -- name --> Canada
+
+    entityBZ{{246}} -- firstName --> Brooklyn
+    entityBZ -- lastName --> Zelenka
+    entityBZ -- city --> entityVC
+
+    entityBM{{789}} -- firstName --> Boris
+    entityBM -- lastName --> Mann
+    entityBM -- city --> entityVC
+
+        entityVC{{456}} -- is --> city
+    entityVC -- name --> Vancouver
+    entityVC -- in_country --> entityCA
+
+    style entityBM fill:orange
+    style entityBZ fill:purple
+    style entityVC fill:skyblue
+    style entityCA fill:pink
+```
+
 The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
 
 #### 4.1.1.1 Implicit CID
