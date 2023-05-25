@@ -249,7 +249,7 @@ The extensional database MUST only store facts as quads (4-tuples) in EAVC forma
 
 | Field         | Type          | Description                                        |
 |---------------|---------------|----------------------------------------------------|
-| **E**ntity ID | [`EntityID`]  | Entity ID                                          |
+| **E**ntity ID | `Bytes`       | [Entity ID]                                        |
 | **A**ttribute | [`Attribute`] | The name of the value's relationship to the entity |
 | **V**alue     | [`Value`]     | The (primitive) value being associated             |
 | **C**ausal    | `Set CID`     | Any causal links                                   |
@@ -287,19 +287,21 @@ $$
 
 ``` mermaid
 flowchart RL
-    sunset -- after --> noon
+    sunset   -- after --> noon
     midnight -- after --> sunset
 ```
 
 ### 4.1.2 Entity ID
 
-An "entity" is some subject in the database that can have an attribute. 
+An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
 
 ``` haskell
-newtype EntityID = EntityID Binary
+type EntityID = Bytes
 ```
 
 ### 4.1.3 Attribute
+
+Attributes MUST be an integer, double-precision float, UTF8, or binary.
 
 ``` haskell
 data Attribute
@@ -315,14 +317,13 @@ The EDB supports the following primitive value types:
 
 ``` haskell
 data Value
-  = EntityID Bytes
-  | Attr     Attribute
-  | Bool     Boolean
-  | Bin      Bytes
-  | Int      Integer
-  | Float    Double
-  | Text     UTF8
-  | Link     CID
+  = Attr  Attribute
+  | Bool  Boolean
+  | Bin   Bytes
+  | Int   Integer
+  | Float Double
+  | Text  UTF8
+  | Link  CID
 ```
 
 <!-- Links -->
@@ -344,7 +345,7 @@ data Value
 [WebAssembly]: https://webassembly.org/
 [WebNative File System]: https://github.com/wnfs-wg/spec
 [`Attribute`]: #413-attribute
-[`EntityID`]: #412-entity-id
+[`Entity ID`]: #412-entity-id
 [`Value`]: #414-value
 [content addressing]: #24-content-addressing
 [relation]: #22-relation
