@@ -279,17 +279,13 @@ Using the "sky is blue" example above, how woud that update for the evening?
 
 $$
 \begin{align}
-
 \textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{blue}, \emptyset \rangle\\
-
 \textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
-
 \textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
-
 \end{align}
 $$
 
-``` mermaidjs
+``` mermaid
 flowchart RL
     sunset -- after --> noon
     midnight -- after --> sunset
