@@ -273,7 +273,7 @@ Each tuple within a fact also has an implied [CID][content addressing]. This beh
 type CidIndex = Map CID Fact
 ```
 
-As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relatiship (assuming no known hash cycles).
+As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship (assuming no known hash cycles).
 
 Using the "sky is blue" example above, how would that be updated for the evening?
 
