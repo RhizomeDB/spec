@@ -295,6 +295,7 @@ flowchart TB
     style entityBM fill:orange
     style entityBZ fill:purple
     style entityVC fill:skyblue
+    style entityCgy fill:red
 
     classDef attr fill:lightgrey,color:grey,stroke:none;
 ```
