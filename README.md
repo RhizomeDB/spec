@@ -314,8 +314,8 @@ The first three fields (entity, attribute, and value) are analogous to a subject
 
 Each tuple within a fact also has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
 
-``` haskell
-type CidIndex = Map CID Fact
+``` typescript
+type CidIndex = {[Cid]: Fact}
 ```
 
 As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship (assuming no known hash cycles).
@@ -349,11 +349,11 @@ type EntityID = Bytes
 Attributes MUST be an integer, double-precision float, UTF8, or binary.
 
 ``` typescript
-data Attribute
-  = Integer -- e.g. Normal indices
-  | Double  -- e.g. Fractional indices
-  | Bytes
+type Attribute
+  = Integer // e.g. Normal indices
+  | Double  // e.g. Fractional indices
   | Utf8
+  | Bytes
 ```
 
 ### 4.1.4 Value
