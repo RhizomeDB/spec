@@ -269,9 +269,15 @@ data Fact = Fact
 flowchart TB
     subgraph Legend
       direction TB
-      entity{{Entity}} --- att([Attribute]):::attr --> Value
-      entity --- att2([AnotherAttribute]):::attr --> AnotherValue
+
+      entity{{Entity}} --- att([Attribute]):::attr ----> Value
       att2 -.- cause>after/cause]:::attr -.-> att
+      att2  ---> AnotherValue
+      entity --- att2([AnotherAttribute]):::attr
+      
+      %% Layout Hacks
+      att ~~~ att2
+      att2 ~~~ att
     end
 
     Legend ~~~ entityBZ
