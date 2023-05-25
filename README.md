@@ -269,7 +269,7 @@ flowchart TB
       direction TB
       entity{{Entity}} --- att([Attribute]):::attr --> Value
       entity --- att2([AnotherAttribute]):::attr --> AnotherValue
-      att2 -.- cause([after/cause]):::attr -.-> att
+      att2 -.- cause>after/cause]:::attr -.-> att
     end
 
     Legend ~~~ entityBZ
@@ -277,7 +277,7 @@ flowchart TB
     entityBZ{{246}} --- bzFN([first name]):::attr --> Brooklyn
     entityBZ --- bzLN([last name]):::attr --> Zelenka
 
-    bzNewCity -.- after([after/cause]):::attr .-> bzOldCity
+    bzNewCity -.- after>after/cause]:::attr .-> bzOldCity
 
     entityBZ --- bzOldCity([home]):::attr --> entityCgy
     entityBZ --- bzNewCity([home]):::attr --> entityVC
@@ -286,10 +286,10 @@ flowchart TB
     entityBM{{789}} --- bmFN([first name]):::attr --> Boris
     entityBM --- bmLN([last name]):::attr --> Mann
 
-    entityCgy{{357}} --- calIs([is]):::attr --> calCty[city]
+    entityCgy{{357}} --- calIs([is]):::attr --> city
     entityCgy --- calName([name]):::attr --> Calgary
 
-    entityVC{{456}} --- vcIs([is]):::attr --> vcCty[city]
+    entityVC{{456}} --- vcIs([is]):::attr --> city
     entityVC --- vcName([name]):::attr --> Vancouver
 
     style entityBM fill:orange
