@@ -256,10 +256,10 @@ The extensional database MUST only store facts as quads (4-tuples) in EAVC forma
 
 ``` typescript
 type Fact = {
-  eid: Bytes,
-  attr: Attribute,
-  val: Value,
-  causal: Set<Cid>,
+  eid: Bytes;
+  attr: Attribute;
+  val: Value;
+  causal: Set<Cid>;
 }
 ```
 
