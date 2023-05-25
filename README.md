@@ -263,7 +263,7 @@ data Fact = Fact
   }
 ```
 
-``` mermaidjs
+``` mermaid
 flowchart TB
     entityCA{{123}} -- name --> Canada
 
