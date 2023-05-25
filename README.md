@@ -264,6 +264,8 @@ data Fact = Fact
 ```
 
 ``` mermaid
+%%{ init: { 'flowchart': { 'curve': 'linear' } } }%%
+
 flowchart TB
     subgraph Legend
       direction TB
