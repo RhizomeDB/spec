@@ -1,4 +1,7 @@
 AKE
+skyEID
+rederived
+priori
 Antijoin
 Arity
 BFT
@@ -26,6 +29,7 @@ DSync
 Dataflow
 Datalog
 Dialog's
+EAVC
 EDB
 EVAC
 Encryptions
@@ -98,6 +102,7 @@ antijoins
 ary
 ausal
 auth
+bafy
 bilinear
 bilinearity
 boolean
@@ -116,6 +121,7 @@ deduplicating
 deduplication
 dialable
 disjunction
+emptyset
 encodings
 endian
 equijoin
@@ -157,6 +163,7 @@ runtime
 runtimes
 semijoin
 semijoins
+skyEID
 stateful
 stratifications
 subcircuit
@@ -167,6 +174,7 @@ subgraph
 subgraphs
 subquery
 subtractive
+textsf
 th
 timestep
 timesteps

@@ -172,7 +172,7 @@ The raw dependencies between components in the systems stack as follows:
 └─────────────────────────────────────────────────────────┘
 ```
 
-PomoDB choses to implement this as a the following stack:
+PomoDB chooses to implement this as a the following stack:
 
 ``` 
 ┌─────────────────────────────────────────────────────────┐
@@ -263,7 +263,7 @@ data Fact = Fact
   }
 ```
 
-The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{colour}, \textsf{blue} \rangle$.
+The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
 
 #### 4.1.1.1 Implicit CID
 
@@ -275,13 +275,13 @@ type CidIndex = Map CID Fact
 
 As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relatiship (assuming no known hash cycles).
 
-Using the "sky is blue" example above, how woud that update for the evening?
+Using the "sky is blue" example above, how would that be updated for the evening?
 
 $$
 \begin{align}
-\textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{blue}, \emptyset \rangle\\
-\textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
-\textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
+\textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{blue}, \emptyset \rangle\\
+\textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
+\textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
 \end{align}
 $$
 
