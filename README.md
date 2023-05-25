@@ -254,13 +254,13 @@ The extensional database MUST only store facts as quads (4-tuples) in EAVC forma
 | **V**alue     | [`Value`]     | The (primitive) value being associated             |
 | **C**ausal    | `Set CID`     | Any causal links                                   |
 
-``` haskell
-data Fact = Fact
-  { eid    :: Bytes
-  , attr   :: Attribute
-  , val    :: Value
-  , causal :: Set CID
-  }
+``` typescript
+type Fact = {
+  eid: Bytes,
+  attr: Attribute,
+  val: Value,
+  causal: Set<Cid>,
+}
 ```
 
 ``` mermaid
@@ -340,7 +340,7 @@ flowchart RL
 
 An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
 
-``` haskell
+``` typescript
 type EntityID = Bytes
 ```
 
@@ -348,27 +348,26 @@ type EntityID = Bytes
 
 Attributes MUST be an integer, double-precision float, UTF8, or binary.
 
-``` haskell
+``` typescript
 data Attribute
-  = AttrInt   Integer -- e.g. Normal indices
-  | AttrFloat Double  -- e.g. Fractional indices
-  | AttrBin   Bytes
-  | AttrText  UTF8
+  = Integer -- e.g. Normal indices
+  | Double  -- e.g. Fractional indices
+  | Bytes
+  | Utf8
 ```
 
 ### 4.1.4 Value
 
 The EDB supports the following primitive value types:
 
-``` haskell
-data Value
-  = Attr  Attribute
-  | Bool  Boolean
-  | Bin   Bytes
-  | Int   Integer
-  | Float Double
-  | Text  UTF8
-  | Link  CID
+``` typescript
+type Value
+  = Boolean
+  | Bytes
+  | Integer
+  | Double
+  | Utf8
+  | Cid
 ```
 
 <!-- Links -->
