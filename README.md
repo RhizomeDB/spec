@@ -279,10 +279,10 @@ flowchart TB
 
     bzNewCity -.- after([after/cause]):::attr .-> bzOldCity
 
-    entityBZ --- bzOldCity([city]):::attr --> entityCgy
-    entityBZ --- bzNewCity([city]):::attr --> entityVC
+    entityBZ --- bzOldCity([home]):::attr --> entityCgy
+    entityBZ --- bzNewCity([home]):::attr --> entityVC
 
-    entityBM --- bmCity([city]):::attr --> entityVC
+    entityBM --- bmCity([home]):::attr --> entityVC
     entityBM{{789}} --- bmFN([firstName]):::attr --> Boris
     entityBM --- bmLN([lastName]):::attr --> Mann
 
