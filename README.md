@@ -265,24 +265,38 @@ data Fact = Fact
 
 ``` mermaid
 flowchart TB
-    entityCA{{123}} -- name --> Canada
+    subgraph Legend
+      direction TB
+      entity{{Entity}} --- att([Attribute]):::attr --> Value
+      entity --- att2([AnotherAttribute]):::attr --> AnotherValue
+      att2 -.- cause([after/cause]):::attr -.-> att
+    end
 
-    entityBZ{{246}} -- firstName --> Brooklyn
-    entityBZ -- lastName --> Zelenka
-    entityBZ -- city --> entityVC
+    Legend ~~~ entityBZ
 
-    entityBM{{789}} -- firstName --> Boris
-    entityBM -- lastName --> Mann
-    entityBM -- city --> entityVC
+    entityBZ{{246}} --- bzFN([firstName]):::attr --> Brooklyn
+    entityBZ --- bzLN([lastName]):::attr --> Zelenka
 
-        entityVC{{456}} -- is --> city
-    entityVC -- name --> Vancouver
-    entityVC -- in_country --> entityCA
+    bzNewCity -.- after([after/cause]):::attr .-> bzOldCity
+
+    entityBZ --- bzOldCity([city]):::attr --> entityCgy
+    entityBZ --- bzNewCity([city]):::attr --> entityVC
+
+    entityBM --- bmCity([city]):::attr --> entityVC
+    entityBM{{789}} --- bmFN([firstName]):::attr --> Boris
+    entityBM --- bmLN([lastName]):::attr --> Mann
+
+    entityCgy{{357}} --- calIs([is]):::attr --> calCty[city]
+    entityCgy --- calName([name]):::attr --> Calgary
+
+    entityVC{{456}} --- vcIs([is]):::attr --> vcCty[city]
+    entityVC --- vcName([name]):::attr --> Vancouver
 
     style entityBM fill:orange
     style entityBZ fill:purple
-    style entityVC fill:blue
-    style entityCA fill:red
+    style entityVC fill:skyblue
+
+    classDef attr fill:lightgrey,color:grey,stroke:none;
 ```
 
 The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
