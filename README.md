@@ -274,8 +274,8 @@ flowchart TB
 
     Legend ~~~ entityBZ
 
-    entityBZ{{246}} --- bzFN([firstName]):::attr --> Brooklyn
-    entityBZ --- bzLN([lastName]):::attr --> Zelenka
+    entityBZ{{246}} --- bzFN([first name]):::attr --> Brooklyn
+    entityBZ --- bzLN([last name]):::attr --> Zelenka
 
     bzNewCity -.- after([after/cause]):::attr .-> bzOldCity
 
@@ -283,8 +283,8 @@ flowchart TB
     entityBZ --- bzNewCity([home]):::attr --> entityVC
 
     entityBM --- bmCity([home]):::attr --> entityVC
-    entityBM{{789}} --- bmFN([firstName]):::attr --> Boris
-    entityBM --- bmLN([lastName]):::attr --> Mann
+    entityBM{{789}} --- bmFN([first name]):::attr --> Boris
+    entityBM --- bmLN([last name]):::attr --> Mann
 
     entityCgy{{357}} --- calIs([is]):::attr --> calCty[city]
     entityCgy --- calName([name]):::attr --> Calgary
