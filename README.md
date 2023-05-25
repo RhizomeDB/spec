@@ -53,34 +53,7 @@ Of particular interest are operating in browsers, mobile applications, and IoT d
 
 # 2. Design
 
-## 2.1 Types
-
-PomoDB is designed to compile well to [WebAssembly], and so its types and their encodings are informed by the format. See the [WebAssembly specification][Wasm Primitive Types] for more information.
-
-Note, however, that only some types are supported as PomoDB primitives. These are:
-
-FIXME!
-
-- [Wasm Numbers]
-- [Wasm Opaque Reference Types]
-
-As WebAssembly does not define common types like booleans or strings, these are handled using opaque reference types, and more information is available in the [serialization] specification.
-
-FIXME!
-
-The primitive types that the EDB supports are as follows:
-
-``` haskell
-type PomoPrim
-  = PomoLink     CID
-  | PomoEntityID Binary
-  | PomoInt      Integer
-  | PomoFloat    Double
-  | PomoText     UTF8
-  | PomoBin      Binary
-```
-
-## 2.2 Relation
+## 2.1 Relation
 
 A relation is a set of tuples, where each component of the tuple is called an attribute, and can be referenced by an attribute name.
 
@@ -90,26 +63,7 @@ $\langle a_1: v_1, a_2: v_2, \dots , a_n: v_n \rangle$
 
 Where $a_1, a_2, \dots , a_n$ give the names of each attribute, and $v_1, v_2, \dots , v_n$ are their values.
 
-### 2.2.1 Quads
-
-The extensional database MUST only store quads (4-tuples) in EVAC format. All fields are REQUIRED, though the Causal set MAY be empty.
-
-| Field         | Type         | Description                                        |
-|---------------|--------------|----------------------------------------------------|
-| **E**ntity    | `EntityID`   | Entity ID                                          |
-| **V**alue     | [`PomoPrim`] | The (primitive) value being associated             |
-| **A**ttribute | `String`     | The name of the value's relationship to the entity |
-| **C**ausal    | `Set CID`    | Any causal links                                   |
-
-Each quad MUST include an implied CID.
-
-### 2.2.1 CID Attribute
-
-Each tuple within a relation also has a [content identifier][content addressing] (CID).
-
-This CID can be accessed through a special control attribute denoted as `$CID`: however implementations are RECOMMENDED to use their type system to differentiate between such attributes.
-
-## 2.3 Time
+## 2.2 Time
 
 PomoDB is a temporal database which internally models the progression of time as data changes, with each batch of data relating to a timestamp, called an epoch.
 
@@ -121,7 +75,7 @@ The database state is modeled as a function of time and the program under evalua
 
 PomoDB timestamps form a logical clock and hold no meaning to any other instances of PomoDB.
 
-## 2.4 Content Addressing
+## 2.3 Content Addressing
 
 As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a content addressing scheme is leveraged, and tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
 
@@ -131,7 +85,7 @@ Since content addressing schemes are backed by cryptographically secure hash fun
 
 These properties are further leveraged in the design and use of byzantine-fault tolerant CRDTs, as described in [CRDTs].
 
-## 2.5 Query Engine
+## 2.4 Query Engine
 
 PomoDB has no specified query language. Instead, an intermediate representation based on the relational algebra, named [PomoRA], is defined.
 
@@ -139,7 +93,7 @@ Implementations MAY define their own user-facing query language, but they are RE
 
 An OPTIONAL Datalog variant, named [PomoLogic], is also described, along with an OPTIONAL runtime for PomoRA, named [PomoFlow].
 
-## 2.6 Evaluation
+## 2.5 Evaluation
 
 Evaluation of PomoDB queries proceeds in timesteps, called epochs, which each compute a least fixed point over a batch of changes to the database.
 
@@ -151,9 +105,9 @@ Upon computing a relation's fixed point, any [sinks] over that relation SHOULD b
 
 PomoDB queries MAY be implemented over incremental computations, in which case each epoch is RECOMMENDED to operate over deltas of the database, wherever possible. [PomoFlow] is an OPTIONAL runtime with such capabilities.
 
-## 2.7 Sources
+## 2.6 Sources
 
-Sources act as ingress points for a PomoDB query, and introduce tuples from the outside world, such as by loading them from a local persistence layer, or by querying them from a remote data source such as IPFS.
+Sources act as ingress points for a PomoDB query, and introduce tuples from the outside world, such as by loading them from a local persistence layer, or by querying them from a remote data source such as [IPFS].
 
 Sources can be queried as if they were [relation]s.
 
@@ -163,7 +117,7 @@ Sources MAY emit deltas of tuples, if a runtime able to take advantage of increm
 
 Implementations MAY also support user defined sources, such as to facilitate the integration of PomoDB into external systems for persistence or communication.
 
-## 2.8 Sinks
+## 2.7 Sinks
 
 Sinks act as egress points for a PomoDB query, and emit tuples to the outside world for further processing or storage.
 
@@ -287,8 +241,65 @@ This specification describes PomoRA, a representation of the relational algebra 
 
 The data layout stored to disk is the "extensional database" (EDB). This is the "ground truth" database, from which all other knowledge is derived via queries.
 
-#### 3.1.4.1 Primitive Types
+## 4.1 Types
 
+### 4.1.1 Quad
+
+The extensional database MUST only store quads (4-tuples) in EVAC format. All fields are REQUIRED, though the Causal set MAY be empty.
+
+| Field         | Type         | Description                                        |
+|---------------|--------------|----------------------------------------------------|
+| **E**ntity    | `EntityID`   | Entity ID                                          |
+| **V**alue     | [`PomoPrim`] | The (primitive) value being associated             |
+| **A**ttribute | `String`     | The name of the value's relationship to the entity |
+| **C**ausal    | `Set CID`    | Any causal links                                   |
+
+``` haskell
+data EVAC = EVAC
+  { eid    :: Bytes
+  , val    :: Value
+  , attr   :: Attribute
+  , causal :: Set CID
+  }
+```
+
+#### 4.1.1.1 Implied CID
+
+Each tuple within a fact also has a [content identifier][content addressing] (CID).
+
+This CID can be accessed through a special control attribute denoted as `$CID`: however implementations are RECOMMENDED to use their type system to differentiate between such attributes.
+
+``` haskell
+data Index = Index CID EVAC
+```
+
+Each quad MUST include an implied CID.
+
+### 4.1.2 Attribute
+
+``` haskell
+data Attribute
+  = AttrInt   Integer -- e.g. Normal indices
+  | AttrFloat Double  -- e.g. Fractional indices
+  | AttrBin   Bytes
+  | AttrText  UTF8
+```
+
+### 4.1.3 Value
+
+The EDB supports the following primitive value types:
+
+``` haskell
+data Value
+  = EntityID Bytes
+  | Attr     Attribute
+  | Bool     Boolean
+  | Bin      Bytes
+  | Int      Integer
+  | Float    Double
+  | Text     UTF8
+  | Link     CID
+```
 
 <!-- Links -->
 
@@ -296,6 +307,7 @@ The data layout stored to disk is the "extensional database" (EDB). This is the 
 [Brooklyn Zelenka]: https://github.com/expede
 [CRDTs]: pomo_db/CRDTs.md
 [Fission Codes]: https://fission.codes
+[IPFS]: https://ipfs.io
 [IPLD]: https://ipld.io/specs/
 [Pomo Logic]: https://github.com/RhizomeDB/PomoLogic
 [Pomo RA]: https://github.com/RhizomeDB/PomoRA
