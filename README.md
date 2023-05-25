@@ -281,8 +281,8 @@ flowchart TB
 
     style entityBM fill:orange
     style entityBZ fill:purple
-    style entityVC fill:skyblue
-    style entityCA fill:pink
+    style entityVC fill:blue
+    style entityCA fill:red
 ```
 
 The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
