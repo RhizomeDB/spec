@@ -277,17 +277,17 @@ flowchart TB
     entityBZ{{246}} --- bzFN([first name]):::attr --> Brooklyn
     entityBZ --- bzLN([last name]):::attr --> Zelenka
 
-    bzNewCity -.- after>after/cause]:::attr .-> bzOldCity
-
     entityBZ --- bzOldCity([home]):::attr --> entityCgy
     entityBZ --- bzNewCity([home]):::attr --> entityVC
+
+    bzNewCity -.- after>after/cause]:::attr .-> bzOldCity
 
     entityBM --- bmCity([home]):::attr --> entityVC
     entityBM{{789}} --- bmFN([first name]):::attr --> Boris
     entityBM --- bmLN([last name]):::attr --> Mann
 
-    entityCgy{{357}} --- calIs([is]):::attr --> city
     entityCgy --- calName([name]):::attr --> Calgary
+    entityCgy{{357}} --- calIs([is]):::attr --> city
 
     entityVC{{456}} --- vcIs([is]):::attr --> city
     entityVC --- vcName([name]):::attr --> Vancouver
