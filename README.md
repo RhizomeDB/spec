@@ -243,39 +243,67 @@ The data layout stored to disk is the "extensional database" (EDB). This is the 
 
 ## 4.1 Types
 
-### 4.1.1 Quad
+### 4.1.1 Fact
 
-The extensional database MUST only store quads (4-tuples) in EVAC format. All fields are REQUIRED, though the Causal set MAY be empty.
+The extensional database MUST only store facts as quads (4-tuples) in EAVC format. All fields are REQUIRED, though the causal set MAY be empty.
 
-| Field         | Type         | Description                                        |
-|---------------|--------------|----------------------------------------------------|
-| **E**ntity    | `EntityID`   | Entity ID                                          |
-| **V**alue     | [`PomoPrim`] | The (primitive) value being associated             |
-| **A**ttribute | `String`     | The name of the value's relationship to the entity |
-| **C**ausal    | `Set CID`    | Any causal links                                   |
+| Field         | Type          | Description                                        |
+|---------------|---------------|----------------------------------------------------|
+| **E**ntity ID | [`EntityID`]  | Entity ID                                          |
+| **A**ttribute | [`Attribute`] | The name of the value's relationship to the entity |
+| **V**alue     | [`Value`]     | The (primitive) value being associated             |
+| **C**ausal    | `Set CID`     | Any causal links                                   |
 
 ``` haskell
-data EVAC = EVAC
+data Fact = Fact
   { eid    :: Bytes
-  , val    :: Value
   , attr   :: Attribute
+  , val    :: Value
   , causal :: Set CID
   }
 ```
 
-#### 4.1.1.1 Implied CID
+The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{colour}, \textsf{blue} \rangle$.
 
-Each tuple within a fact also has a [content identifier][content addressing] (CID).
+#### 4.1.1.1 Implicit CID
 
-This CID can be accessed through a special control attribute denoted as `$CID`: however implementations are RECOMMENDED to use their type system to differentiate between such attributes.
+Each tuple within a fact also has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
 
 ``` haskell
-data Index = Index CID EVAC
+type CidIndex = Map CID Fact
 ```
 
-Each quad MUST include an implied CID.
+As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relatiship (assuming no known hash cycles).
 
-### 4.1.2 Attribute
+Using the "sky is blue" example above, how woud that update for the evening?
+
+$$
+\begin{align}
+
+\textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{blue}, \emptyset \rangle\\
+
+\textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
+
+\textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{colour}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
+
+\end{align}
+$$
+
+``` mermaidjs
+flowchart RL
+    sunset -- after --> noon
+    midnight -- after --> sunset
+```
+
+### 4.1.2 Entity ID
+
+An "entity" is some subject in the database that can have an attribute. 
+
+``` haskell
+newtype EntityID = EntityID Binary
+```
+
+### 4.1.3 Attribute
 
 ``` haskell
 data Attribute
@@ -285,7 +313,7 @@ data Attribute
   | AttrText  UTF8
 ```
 
-### 4.1.3 Value
+### 4.1.4 Value
 
 The EDB supports the following primitive value types:
 
@@ -319,9 +347,12 @@ data Value
 [Wasm Primitive Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
 [WebAssembly]: https://webassembly.org/
 [WebNative File System]: https://github.com/wnfs-wg/spec
-[`PomoPrim`]: #3141-primitive-types
+[`Attribute`]: #413-attribute
+[`EntityID`]: #412-entity-id
+[`Value`]: #414-value
 [content addressing]: #24-content-addressing
 [relation]: #22-relation
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
+[time]: #22-time
