@@ -13,8 +13,8 @@
 ## Dependencies
 
 - [IPLD]
-- [Pomo Logic]
-- [Pomo RA]
+- [PomoLogic]
+- [PomoRA]
 - [WebNative File System]
 
 ## Appendices
@@ -83,25 +83,25 @@ PomoDB timestamps form a logical clock and hold no meaning to any other instance
 
 ## 2.3 Content Addressing
 
-As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a content addressing scheme is leveraged, and tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
+As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, content addressing scheme is used. Tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
 
-The choice of CIDs here, rather than more common choices, like auto incrementing IDs or UUIDs, reflects PomoDB's goals in targeting distributed and decentralized environments, where coordination around the allocation of IDs can't be guaranteed, and where resilience against malicious and byzantine actors is required.
+The choice of CIDs as primary key — rather than more familiar choices such as auto incrementing IDs or UUIDs — reflects PomoDB's goals in targeting distributed and decentralized environments, where coordination around the allocation of IDs can't be guaranteed, and where resilience against malicious and byzantine actors is required.
 
-Since content addressing schemes are backed by cryptographically secure hash functions, their use here prevents forgery of IDs by attackers, and guarantees that CID-based dependencies between tuples will be acyclic.
+Since content addressing schemes are backed by cryptographically secure hash functions, their use here prevents forgery of IDs by attackers, and guarantees that CID-based dependencies between tuples will always be acyclic.
 
-These properties are further leveraged in the design and use of byzantine-fault tolerant CRDTs, as described in [CRDTs].
+These properties further enable [byzantine-fault tolerant CRDTs][BFT-CRDTs].
 
 ## 2.4 Query Engine
 
-PomoDB has no specified query language. Instead, an intermediate representation based on the relational algebra, named [PomoRA], is defined.
+PomoDB has no specified high-level query language. An intermediate representation based on datalog is defined instead ([PomoLogic]). Implementations MAY define their own user-facing query language, but they are RECOMMENDED to treat [PomoLogic] as a common compilation target for all such languages.
 
-Implementations MAY define their own user-facing query language, but they are RECOMMENDED to treat PomoRA as a common compilation target for all such languages.
+An OPTIONAL relational runtime that MAY be compiled from [PomoLogic] is described in [PomoRA]. 
 
-An OPTIONAL Datalog variant, named [PomoLogic], is also described, along with an OPTIONAL runtime for PomoRA, named [PomoFlow].
+An OPTIONAL dataflow runtime that MAY be compiled from [PomoRA] is described in [PomoFlow]. In this case, [PomoRA] is treated as a query planner.
 
 ## 2.5 Evaluation
 
-Evaluation of PomoDB queries proceeds in timesteps, called epochs, which each compute a least fixed point over a batch of changes to the database.
+Evaluation of PomoDB queries proceeds in timesteps ("epochs") which compute a least fixed point over a batch of changes to the database.
 
 The details behind this computation are runtime specific, however all runtimes MUST provide the following additional guarantees.
 
@@ -241,7 +241,7 @@ PomoFlow is a dataflow runtime for PomoDB. This design is especially suited for 
 
 Relational algebra is the theory underpinning relational databases and the query languages against them. It provides a small core language of relational operators that serve as simple building blocks for more complex forms of query processing.
 
-This specification describes PomoRA, a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
+This specification describes [PomoRA], a representation of the relational algebra intended for use as an intermediate representation for PomoDB query languages.
 
 # 4 Extensional Database
 
@@ -388,7 +388,7 @@ type Value
 [A Certain Tendency of the Database Community]: https://arxiv.org/pdf/1510.08473.pdf
 [A Thousand Plateaus: Capitalism and Schizophrenia]: https://en.wikipedia.org/wiki/A_Thousand_Plateaus
 [Brooklyn Zelenka]: https://github.com/expede
-[CRDTs]: pomo_db/CRDTs.md
+[BFT-CRDTs]: https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf
 [Deleuze]: https://en.wikipedia.org/wiki/Gilles_Deleuze
 [Fallacies of distributed computing]: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
 [Fission Codes]: https://fission.codes
@@ -398,8 +398,8 @@ type Value
 [IPLD]: https://ipld.io/specs/
 [Laurent Binet]: https://en.wikipedia.org/wiki/Laurent_Binet
 [Named Graphs]: https://en.wikipedia.org/wiki/Named_graph#Named_graphs_and_quads
-[Pomo Logic]: https://github.com/RhizomeDB/PomoLogic
-[Pomo RA]: https://github.com/RhizomeDB/PomoRA
+[PomoLogic]: https://github.com/RhizomeDB/PomoLogic
+[PomoRA]: https://github.com/RhizomeDB/PomoRA
 [Postmodernism]: https://en.wikipedia.org/wiki/Postmodernism
 [Quinn Wilton]: https://github.com/QuinnWilton
 [RFC 2119]: https://datatracker.ietf.org/doc/html/rfc2119
