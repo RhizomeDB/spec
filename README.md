@@ -31,6 +31,9 @@ PomoDB is a [content-addressable] database. It enables far-edge deployments (suc
 
 # 1. Introduction
 
+> Glory to the logos, my friends! Long live dialectics! Let the party begin! May the verb be with you!
+> ― [Laurent Binet], [The Seventh Function of Language]
+
 ## 1.1 Motivation
 
 While existing databases increasingly treat network partitions as unavoidable disturbances to uptime, many mitigate these situations under a model that either assumes they will be bounded in length, or by allowing them to have some or all nodes cease operation. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability.
@@ -39,7 +42,12 @@ Modern environments increasingly involve unstable dynamic network topologies of 
 
 ## 1.2 Approach
 
-PomoDB addresses the above constraints with query engine semantics that guarantees eventual consistency across peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
+> A concept is a brick. It can be used to build a courthouse of reason. Or it can be thrown through the window.
+> ― [Deleuze] & [Guattari], [A Thousand Plateaus: Capitalism and Schizophrenia] 
+
+PomoDB addresses the above constraints with query semantics that guarantee eventual consistency between all peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
+
+Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modelling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different pruposes (including science, mathematics, and )
 
 ## 1.3 Environments
 
@@ -243,7 +251,14 @@ The data layout stored to disk is the "extensional database" (EDB). This is the 
 
 ## 4.1 Types
 
-### 4.1.1 Fact
+### 4.1.1 Primitive Types
+
+The primitive types supported by PomoDB MUST be as follows:
+
+- Floats are doubles: IEEE 754-2019
+- Strings are UTF8
+
+### 4.1.2 Fact
 
 The extensional database MUST only store facts as quads (4-tuples) in EAVC format. All fields are REQUIRED, though the causal set MAY be empty.
 
@@ -310,7 +325,7 @@ flowchart TB
 
 The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
 
-#### 4.1.1.1 Implicit CID
+#### 4.1.2.1 Implicit CID
 
 Each tuple within a fact also has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
 
@@ -336,7 +351,7 @@ flowchart RL
     midnight -- after --> sunset
 ```
 
-### 4.1.2 Entity ID
+### 4.1.3 Entity ID
 
 An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
 
@@ -344,7 +359,7 @@ An "entity" is some subject in the database that can have an attribute. Since na
 type EntityID = Bytes
 ```
 
-### 4.1.3 Attribute
+### 4.1.4 Attribute
 
 Attributes MUST be an integer, double-precision float, UTF8, or binary.
 
@@ -356,33 +371,40 @@ type Attribute
   | Bytes
 ```
 
-### 4.1.4 Value
+### 4.1.5 Value
 
 The EDB supports the following primitive value types:
 
 ``` typescript
 type Value
   = Boolean
-  | Bytes
   | Integer
   | Double
   | Utf8
   | Cid
+  | Bytes
 ```
 
 <!-- Links -->
 
 [A Certain Tendency of the Database Community]: https://arxiv.org/pdf/1510.08473.pdf
+[A Thousand Plateaus: Capitalism and Schizophrenia]: https://en.wikipedia.org/wiki/A_Thousand_Plateaus
 [Brooklyn Zelenka]: https://github.com/expede
 [CRDTs]: pomo_db/CRDTs.md
+[Deleuze]: https://en.wikipedia.org/wiki/Gilles_Deleuze
+[Fallacies of distributed computing]: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
 [Fission Codes]: https://fission.codes
+[Guattari]: https://en.wikipedia.org/wiki/F%C3%A9lix_Guattari
 [IPFS]: https://ipfs.io
 [IPLD]: https://ipld.io/specs/
+[Laurent Binet]: https://en.wikipedia.org/wiki/Laurent_Binet
 [Pomo Logic]: https://github.com/RhizomeDB/PomoLogic
 [Pomo RA]: https://github.com/RhizomeDB/PomoRA
+[Postmodernism]: https://en.wikipedia.org/wiki/Postmodernism
 [Quinn Wilton]: https://github.com/QuinnWilton
 [RFC 2119]: https://datatracker.ietf.org/doc/html/rfc2119
 [Research]: https://github.com/RhizomeDB/research
+[The Seventh Function of Language]: https://fr.wikipedia.org/wiki/La_Septi%C3%A8me_Fonction_du_langage
 [Wasm Numbers]: https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype
 [Wasm Opaque Reference Types]: https://webassembly.github.io/spec/core/syntax/types.html#reference-types
 [Wasm Primitive Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
