@@ -32,6 +32,7 @@ PomoDB is a [content-addressable] database. It enables far-edge deployments (suc
 # 1. Introduction
 
 > Glory to the logos, my friends! Long live dialectics! Let the party begin! May the verb be with you!
+>
 > ― [Laurent Binet], [The Seventh Function of Language]
 
 ## 1.1 Motivation
@@ -43,6 +44,7 @@ Modern environments increasingly involve unstable dynamic network topologies of 
 ## 1.2 Approach
 
 > A concept is a brick. It can be used to build a courthouse of reason. Or it can be thrown through the window.
+>
 > ― [Deleuze] & [Guattari], [A Thousand Plateaus: Capitalism and Schizophrenia] 
 
 PomoDB addresses the above constraints with query semantics that guarantee eventual consistency between all peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
