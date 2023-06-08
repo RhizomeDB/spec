@@ -262,7 +262,9 @@ The primitive types supported by PomoDB MUST be as follows:
 
 ### 4.1.2 Fact
 
-The extensional database MUST only store facts as quads (4-tuples) in EAVC format. All fields are REQUIRED, though the causal set MAY be empty.
+The extensional database MUST only store facts as quads (4-tuples) in EAVC[^spoc] format. All fields are REQUIRED, though the causal set MAY be empty.
+
+[^spoc]: This is [sometimes called SPOC][Hexastore] (🖖) for ["subject-predicate-object-context"][Named Graphs]
 
 | Field         | Type          | Description                                        |
 |---------------|---------------|----------------------------------------------------|
@@ -281,8 +283,6 @@ type Fact = {
 ```
 
 ``` mermaid
-%%{ init: { 'flowchart': { 'curve': 'linear' } } }%%
-
 flowchart TB
     subgraph Legend
       direction TB
@@ -397,9 +397,11 @@ type Value
 [Fallacies of distributed computing]: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
 [Fission Codes]: https://fission.codes
 [Guattari]: https://en.wikipedia.org/wiki/F%C3%A9lix_Guattari
+[Hexastore]: https://people.csail.mit.edu/tdanford/6830papers/weiss-hexastore.pdf
 [IPFS]: https://ipfs.io
 [IPLD]: https://ipld.io/specs/
 [Laurent Binet]: https://en.wikipedia.org/wiki/Laurent_Binet
+[Named Graphs]: https://en.wikipedia.org/wiki/Named_graph#Named_graphs_and_quads
 [Pomo Logic]: https://github.com/RhizomeDB/PomoLogic
 [Pomo RA]: https://github.com/RhizomeDB/PomoRA
 [Postmodernism]: https://en.wikipedia.org/wiki/Postmodernism
