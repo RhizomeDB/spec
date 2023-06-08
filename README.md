@@ -276,6 +276,8 @@ type Fact = {
 }
 ```
 
+The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
+
 #### 4.1.2.1 Implicit CID
 
 Each tuple within a fact also has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
@@ -368,8 +370,6 @@ flowchart TB
 
     classDef attr fill:lightgrey,color:grey,stroke:none;
 ```
-
-The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
 
 
 ### 4.1.4 Attribute
