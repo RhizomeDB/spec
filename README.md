@@ -276,6 +276,58 @@ type Fact = {
 }
 ```
 
+#### 4.1.2.1 Implicit CID
+
+Each tuple within a fact also has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
+
+``` typescript
+type CidIndex = {[Cid]: Fact}
+```
+
+As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship (assuming no known hash cycles).
+
+Using the "sky is blue" example above, how would that be updated for the evening?
+
+$$
+\begin{align}
+  \textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{blue}, \emptyset \rangle\\
+  \textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
+  \textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
+\end{align}
+$$
+
+``` mermaid
+flowchart RL
+    sunset   -- after --> noon
+    midnight -- after --> sunset
+```
+
+### 4.1.3 Entity ID
+
+An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
+
+``` typescript
+type EntityID = Bytes
+```
+
+#### 4.1.2.2 Example Graph
+
+``` javascript
+{
+  bafy-BCD: {eid: 246, attr: "first_name", val: "Brooklyn", causal: []},
+  bafy-EFG: {eid: 246, attr: "home", val: {eid: 456}, causal: ["bafy-def"]},
+  bafy-GHI: {eid: 789, attr: "last_name", val: "Mann", causal: []},
+  bafy-abc: {eid: 789, attr: "home", val: {eid: 456}, causal: []},
+  bafy-def: {eid: 246, attr: "home", val: {eid: 357}, causal: []},
+  bafy-jkl: {eid: 456, attr: "is", val: "city", causal: []},
+  bafy-mno: {eid: 456, attr: "name", val: "Vancouver", causal: []},
+  bafy-pqr: {eid: 357, attr: "name", val: "Calgary", causal: []},
+  bafy-stu: {eid: 246, attr: "last_name", val: "Zelenka", causal: []},
+  bafy-vwx: {eid: 357, attr: "is", val: "city", causal: []},
+  bafy-yzA: {eid: 789, attr: "first_name", val: "Boris", causal: []}
+}
+```
+
 ``` mermaid
 flowchart TB
     subgraph Legend
@@ -321,39 +373,6 @@ flowchart TB
 
 The first three fields (entity, attribute, and value) are analogous to a subject-predicate-object statement. For example, "the sky is blue" MAY be represented as $\langle \textsf{skyEID}, \textsf{color}, \textsf{blue} \rangle$.
 
-#### 4.1.2.1 Implicit CID
-
-Each tuple within a fact also has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
-
-``` typescript
-type CidIndex = {[Cid]: Fact}
-```
-
-As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship (assuming no known hash cycles).
-
-Using the "sky is blue" example above, how would that be updated for the evening?
-
-$$
-\begin{align}
-  \textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{blue}, \emptyset \rangle\\
-  \textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
-  \textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
-\end{align}
-$$
-
-``` mermaid
-flowchart RL
-    sunset   -- after --> noon
-    midnight -- after --> sunset
-```
-
-### 4.1.3 Entity ID
-
-An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
-
-``` typescript
-type EntityID = Bytes
-```
 
 ### 4.1.4 Attribute
 
