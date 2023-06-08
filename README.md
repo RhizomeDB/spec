@@ -312,21 +312,19 @@ type EntityID = Bytes
 
 #### 4.1.2.2 Example Graph
 
-``` javascript
-{
-  bafy-BCD: {eid: 246, attr: "first_name", val: "Brooklyn", causal: []},
-  bafy-EFG: {eid: 246, attr: "home", val: {eid: 456}, causal: ["bafy-def"]},
-  bafy-GHI: {eid: 789, attr: "last_name", val: "Mann", causal: []},
-  bafy-abc: {eid: 789, attr: "home", val: {eid: 456}, causal: []},
-  bafy-def: {eid: 246, attr: "home", val: {eid: 357}, causal: []},
-  bafy-jkl: {eid: 456, attr: "is", val: "city", causal: []},
-  bafy-mno: {eid: 456, attr: "name", val: "Vancouver", causal: []},
-  bafy-pqr: {eid: 357, attr: "name", val: "Calgary", causal: []},
-  bafy-stu: {eid: 246, attr: "last_name", val: "Zelenka", causal: []},
-  bafy-vwx: {eid: 357, attr: "is", val: "city", causal: []},
-  bafy-yzA: {eid: 789, attr: "first_name", val: "Boris", causal: []}
-}
-```
+| CID      | Entity ID | Attribute  | Value      | Causal     |
+|----------|-----------|------------|------------|------------|
+| bafy-abc | 789       | home       | Entity 456 | []         |
+| bafy-def | 246       | home       | Entity 357 | []         |
+| bafy-jkl | 456       | is         | city       | []         |
+| bafy-mno | 456       | name       | Vancouver  | []         |
+| bafy-pqr | 357       | name       | Calgary    | []         |
+| bafy-stu | 246       | last_name  | Zelenka    | []         |
+| bafy-vwx | 357       | is         | city       | []         |
+| bafy-yzA | 789       | first_name | Boris      | []         |
+| bafy-BCD | 246       | first_name | Brooklyn   | []         |
+| bafy-EFG | 246       | home       | Entity 456 | [bafy-def] |
+| bafy-GHI | 789       | last_name  | Mann       | []         |
 
 ``` mermaid
 flowchart TB
