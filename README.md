@@ -306,7 +306,7 @@ flowchart RL
 
 #### 4.1.2.2 Example Graph
 
-| CID      | Entity ID | Attribute  | Value      | Causal     |
+| CID      | Entity ID | Attribute  | Value      | Cause      |
 |----------|-----------|------------|------------|------------|
 | bafy-abc | 789       | home       | Entity 456 | []         |
 | bafy-def | 246       | home       | Entity 357 | []         |
@@ -326,13 +326,13 @@ flowchart TB
       direction TB
 
       entity{{Entity}} --- att([Attribute]):::attr ----> Value
-      att2 -.- cause>after/cause]:::attr -.-> att
-      att2  ---> AnotherValue
-      entity --- att2([AnotherAttribute]):::attr
       
-      %% Layout Hacks
-      att ~~~ att2
-      att2 ~~~ att
+      %% Layout hack
+      att ~~~ cause ~~~ att2
+
+      att2 -.- cause>after/cause]:::attr -.-> att
+      att2  --> AnotherValue
+      entity --- att2([AnotherAttribute]):::attr      
     end
 
     Legend ~~~ entityBZ
