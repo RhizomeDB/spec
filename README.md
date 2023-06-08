@@ -329,10 +329,11 @@ flowchart TB
       
       %% Layout hack
       att ~~~ cause ~~~ att2
+      entity ~~~ cause
 
       att2 -.- cause>after/cause]:::attr -.-> att
       att2  --> AnotherValue
-      entity --- att2([AnotherAttribute]):::attr      
+      entity --- att2([AnotherAttribute]):::attr
     end
 
     Legend ~~~ entityBZ
