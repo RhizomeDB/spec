@@ -107,7 +107,7 @@ Each epoch is denoted by the timestamp succeeding the last, and begins by schedu
 
 Upon computing a relation's fixed point, any [sinks] over that relation SHOULD be scheduled to run over the relation's contents, and evaluation of those sinks MUST be completed before evaluating the next epoch.
 
-PomoDB queries MAY be implemented over incremental computations, in which case each epoch is RECOMMENDED to operate over deltas of the database, wherever possible. [PomoFlow] is an OPTIONAL runtime with such capabilities.
+PomoDB queries MAY be implemented over incremental computations, in which case each epoch is RECOMMENDED to operate over deltas of the database, wherever possible. PomoFlow is an OPTIONAL runtime with such capabilities.
 
 ## 2.6 Sources
 
@@ -117,7 +117,7 @@ Sources can be queried as if they were [relation]s.
 
 Implementations MAY define their own sources, but sources SHOULD be non-blocking, and are RECOMMENDED to perform any blocking or IO-intensive operations asynchronously.
 
-Sources MAY emit deltas of tuples, if a runtime able to take advantage of incremental computation is being used, like [PomoFlow].
+Sources MAY emit deltas of tuples, if a runtime able to take advantage of incremental computation is being used, like PomoFlow
 
 Implementations MAY also support user defined sources, such as to facilitate the integration of PomoDB into external systems for persistence or communication.
 
