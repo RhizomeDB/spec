@@ -95,9 +95,7 @@ These properties further enable [byzantine-fault tolerant CRDTs][BFT-CRDTs].
 
 PomoDB has no specified high-level query language. An intermediate representation based on datalog is defined instead ([PomoLogic]). Implementations MAY define their own user-facing query language, but they are RECOMMENDED to treat [PomoLogic] as a common compilation target for all such languages.
 
-An OPTIONAL relational runtime that MAY be compiled from [PomoLogic] is described in [PomoRA]. 
-
-An OPTIONAL dataflow runtime that MAY be compiled from [PomoRA] is described in [PomoFlow]. In this case, [PomoRA] is treated as a query planner.
+An OPTIONAL relational runtime that MAY be compiled from [PomoLogic] is described in [PomoRA]. This can be further optimized with a dataflow runtime for incrementalization.
 
 ## 2.5 Evaluation
 
