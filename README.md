@@ -304,14 +304,6 @@ flowchart RL
     midnight -- after --> sunset
 ```
 
-### 4.1.3 Entity ID
-
-An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
-
-``` typescript
-type EntityID = Bytes
-```
-
 #### 4.1.2.2 Example Graph
 
 | CID      | Entity ID | Attribute  | Value      | Causal     |
@@ -371,6 +363,13 @@ flowchart TB
     classDef attr fill:lightgrey,color:grey,stroke:none;
 ```
 
+### 4.1.3 Entity ID
+
+An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
+
+``` typescript
+type EntityID = Bytes
+```
 
 ### 4.1.4 Attribute
 
