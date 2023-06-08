@@ -341,9 +341,9 @@ Using the "sky is blue" example above, how would that be updated for the evening
 
 $$
 \begin{align}
-\textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{blue}, \emptyset \rangle\\
-\textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
-\textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
+  \textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{blue}, \emptyset \rangle\\
+  \textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
+  \textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
 \end{align}
 $$
 
