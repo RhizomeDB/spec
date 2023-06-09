@@ -31,9 +31,9 @@ PomoDB is a [content-addressable] database. It enables far-edge deployments (suc
 
 # 1. Introduction
 
-> Glory to the logos, my friends! Long live dialectics! Let the party begin! May the verb be with you!
+> A concept is a brick. It can be used to build a courthouse of reason. Or it can be thrown through the window.
 >
-> ― [Laurent Binet], [The Seventh Function of Language]
+> ― [Deleuze] & [Guattari], [A Thousand Plateaus: Capitalism and Schizophrenia] 
 
 ## 1.1 Motivation
 
@@ -43,13 +43,15 @@ Modern environments increasingly involve unstable dynamic network topologies of 
 
 ## 1.2 Approach
 
-> A concept is a brick. It can be used to build a courthouse of reason. Or it can be thrown through the window.
->
-> ― [Deleuze] & [Guattari], [A Thousand Plateaus: Capitalism and Schizophrenia] 
+> No single theory ever agrees with all the facts in its domain.
+> 
+> — [Paul Feyerabend], [Against Method]
 
 PomoDB addresses the above constraints with query semantics that guarantee eventual consistency between all peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
 
-Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modelling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different pruposes (including science, mathematics, and )
+Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modeling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different purposes (including [mathematics][Pomo Math] and science). The only objective facts in PomoDB are the facts (as stements) themselves, and their claimed [causal ordering][B-Series].
+
+This approach lets one treat access control, latency, and partitions as equivalent, and embrace (not just tollerate) all three. Conceptually there is [one, unchanging, universal database][Eternalism], and various observers merely come to learn of parts of the database (new data, new interpretations) over time. However, like in physics, this is not an instantaneous or evenly distributed process: some observers will learn of data before others, and may interact with asymmetric information. An observer doesn't need to learn of the entire universe to use the database: a subjective view is sufficient for the majority of cases. When stronger consistency  is desired, the relevant observers can synchrnize the relevant subset of context.
 
 ## 1.3 Environments
 
@@ -61,6 +63,10 @@ PomoDB is designed to be:
 
 Of particular interest are operating in browsers, mobile applications, and IoT devices.
 
+## 1.4 Classification
+
+PomoDB can be seen as a maximally-sharded schemaless database, a meta-circular CRDT framework, or both simultaneously. It decouples the raw data from interpretation, and expresses [CRDTs as database queries][Keep Calm and CRDT On]. Other than being able to benefit from the last 50+ years of database research, this flexibility makes the database itself user extensible.
+
 # 2. Design
 
 ## 2.1 Relation
@@ -71,6 +77,10 @@ An n-ary relation contains n-tuples, which can each be written: $\langle a_1: v_
 
 ## 2.2 Time
 
+> Cause and effect are two sides of one fact.
+> 
+> Ralph Waldo Emerson 
+
 PomoDB is a temporal database which internally models the progression of time as data changes, with each batch of data relating to a timestamp, called an epoch.
 
 While epochs MUST be represented as an unsigned integer, runtimes MAY refine this representation in order to capture additional metadata about the progression of time.
@@ -79,7 +89,7 @@ All such representations MUST form a partial order, such that subsequent epochs 
 
 The database state is modeled as a function of time and the program under evaluation, and all tuples are associated with the timestamp at which they were computed.
 
-PomoDB timestamps form a logical clock and hold no meaning to any other instances of PomoDB.
+PomoDB timestamps form a logical clock and hold no meaning to any other instances of PomoDB. The static nature of these links means that queries can reason from causes to effects, or from effects to their causes.
 
 ## 2.3 Content Addressing
 
@@ -249,10 +259,18 @@ The data layout stored to disk is the "extensional database" (EDB). This is the 
 
 ### 4.1.1 Primitive Types
 
-The primitive types supported by PomoDB MUST be as follows:
+The primitive types supported by PomoDB MUST be as below. Note that this is at the layer of PomoDB, and the concrete persisted encoding (e.g. JSON, CBOR, Protobuf) MAY be different.
 
-- Floats are doubles: IEEE 754-2019
-- Strings are UTF8
+| Name    | Size      | Descrition | 
+|---------|-----------| -----------| 
+| Boolean | One bit   | A boolean value.
+| Integer | 64-bit    | Signed integer |
+| Double  | 64-bit    | Double-precision floating-point number, as described in [IEEE 754-2019] |
+| String  | Unbounded | [UTF8], including empty strings |
+| Bytes   | Unbounded | Binary octets |
+| CID     | Unbounded | Avoiding the identity hash is RECOMMENDED |
+
+Note that there is no primitive `unit` or `null`. Emulating these constructs in data modeling is NOT RECOMMENDED, as they are semantically anemic and alternative modelings are nearly always available. For example, a common use case for using `null` is unset a field. CRDTs SHOULD use history-preserving tombstoning for this purpose instead.
 
 ### 4.1.2 Fact
 
@@ -398,28 +416,65 @@ type Value
   | Bytes
 ```
 
+# 5 Prior Art
+
+This is a large amount of prior art in this area. Below are a few resources that were either direct influences, or frequently brought up as comparisons to PomoDB. They are presented here alphabetically:
+
+## 5.1 [Automerge]
+
+## 5.2 [Berkley Orders of Magnitude][BOOM]
+
+## 5.3 [Datasette]
+
+## 5.4 [Datomic] & [Datahike]
+
+## 5.5 [Mentat]
+
+## 5.6 [Project Cambria]
+
+## 5.7 [RDF]
+
+## 5.8 [Soufflé]
+
 <!-- Links -->
 
 [A Certain Tendency of the Database Community]: https://arxiv.org/pdf/1510.08473.pdf
 [A Thousand Plateaus: Capitalism and Schizophrenia]: https://en.wikipedia.org/wiki/A_Thousand_Plateaus
-[Brooklyn Zelenka]: https://github.com/expede
+[AMBROSIA]: https://www.microsoft.com/en-us/research/uploads/prod/2018/12/AmbrosiaPaper.pdf
+[Against Method]: https://en.wikipedia.org/wiki/Against_Method
+[Automerge]: https://automerge.org/
+[B-Series]: https://en.wikipedia.org/wiki/B-theory_of_time 
 [BFT-CRDTs]: https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf
+[BOOM]: http://boom.cs.berkeley.edu/
+[Brooklyn Zelenka]: https://github.com/expede
+[Datahike]: https://github.com/replikativ/datahike
+[Datasette]: https://datasette.io/
+[Datomic]: https://www.datomic.com/
 [Deleuze]: https://en.wikipedia.org/wiki/Gilles_Deleuze
+[Eternalism]: https://en.wikipedia.org/wiki/Eternalism_(philosophy_of_time)
 [Fallacies of distributed computing]: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
 [Fission Codes]: https://fission.codes
 [Guattari]: https://en.wikipedia.org/wiki/F%C3%A9lix_Guattari
 [Hexastore]: https://people.csail.mit.edu/tdanford/6830papers/weiss-hexastore.pdf
 [IPFS]: https://ipfs.io
 [IPLD]: https://ipld.io/specs/
+[Keep Calm and CRDT On]: https://www.vldb.org/pvldb/vol16/p856-power.pdf
 [Laurent Binet]: https://en.wikipedia.org/wiki/Laurent_Binet
+[Mentat]: https://mozilla.github.io/mentat/about
 [Named Graphs]: https://en.wikipedia.org/wiki/Named_graph#Named_graphs_and_quads
+[Paul Feyerabend]: https://en.wikipedia.org/wiki/Paul_Feyerabend
+[Pomo Math]: https://link.springer.com/chapter/10.1007/978-3-319-12688-3_68
 [PomoLogic]: https://github.com/RhizomeDB/PomoLogic
 [PomoRA]: https://github.com/RhizomeDB/PomoRA
 [Postmodernism]: https://en.wikipedia.org/wiki/Postmodernism
+[Project Cambria]: https://www.inkandswitch.com/cambria/
 [Quinn Wilton]: https://github.com/QuinnWilton
+[RDF]: https://en.wikipedia.org/wiki/Resource_Description_Framework
 [RFC 2119]: https://datatracker.ietf.org/doc/html/rfc2119
 [Research]: https://github.com/RhizomeDB/research
+[Soufflé]: https://souffle-lang.github.io/
 [The Seventh Function of Language]: https://fr.wikipedia.org/wiki/La_Septi%C3%A8me_Fonction_du_langage
+[UTF8]: https://www.unicode.org/versions/Unicode15.0.0/
 [Wasm Numbers]: https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype
 [Wasm Opaque Reference Types]: https://webassembly.github.io/spec/core/syntax/types.html#reference-types
 [Wasm Primitive Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
