@@ -445,6 +445,8 @@ EXMAPLE HERE
 
 An important order (or "sort") in PomoDB is causal order. This builds up a graph of pointers in the [`Cause`] field.
 
+Below is a example causal graph from three writers. The grouping in this diagram is not important, but is presented this way here for explanitory purposes. In reality, if two writers commit the same fact to the database with the same causal history, they would be be deduplicated since they would have the same CID.
+
 ``` mermaid
 flowchart BT
     style Alice fill:#f9f, stroke-width: 0
@@ -532,6 +534,47 @@ flowchart BT
             linkStyle 25 stroke: deeppink;
             linkStyle 26 stroke: deeppink;
 ```
+
+Note the direction of the arrows: they point from an event to their antecedent cause (i.e. they are pointers like in an EVAC quad). This is sometimes confusing, since we normally reason from cause to effect, but all facts in PomoDB are by their nature "in the causal past". Items in a node's causal history are called its "ancestors". Nodes that depend on a fact are called its "descendants". Graphs MAY be rooted.
+
+#### 4.2.2.1 Parent Nodes
+
+Nodes listed in the [`Causal`] field of a fact are said to be that fact's "parent nodes". A fact MAY have zero or more parents.
+
+``` mermaid
+flowchart BT
+    parentA
+    parentB
+    
+    fact --> parentA
+    fact --> parentB
+```
+
+#### 4.2.2.2 Child Nodes
+
+Nodes that list a fact is their [`Causal`] field of a fact are said to be that fact's "child nodes". A fact MAY have zero or more children.
+
+``` mermaid
+flowchart BT
+    childA --> fact
+    childB --> fact
+```
+
+#### 4.2.2.1 Genesis Nodes
+
+The "earliest" facts in the graph above are `bafy...almond` and `bafy...bacon`, as they have no listed causes. These are called "genesis nodes". In formal terms, these are "causal sinks". These nodes MAY be treated as objectively the earliest in the graph: since as causal information is asserted at write-time, these cannot be earlier, unlisted facts added or discovered later.
+
+There MUST be at least one genesis node in an inhabited graph (even if it is a single-node graph). There MAY be an unbounded number of concurrent genesis nodes.
+
+#### 4.2.2.2 Head Nodes
+
+The "latest" facts in the above graph are `bafy...berry`, and `bafy...coffee`. These are called "head nodes". In formal terms, these are "causal sources". These nodes are merely subjectively the most recent fact: it is possible that some other facts were written elsewhere, but simply have not arrived at the reader yet. Since more facts MAY be appended to the history at any time.
+
+There MUST be at least one head node in an inhabited graph (even if it is a single-node graph). There MAY be an unbounded number of concurrent head nodes.
+
+#### 4.2.2.3 Concurrent Nodes
+
+When comparing any two nodes, if one does not appear in the causal history of the other, then they are said to be "concurrent" or "sibling" nodes. As any two causally disjoint graphs are concurrent with each other, most facts are concurrent.
 
 # 5 Prior Art
 
