@@ -449,7 +449,7 @@ An important order (or "sort") in PomoDB is causal order. This builds up a graph
 flowchart BT
     style Alice fill:#f9f, stroke-width: 0
     subgraph Alice
-        gen[bafy...gen]
+        almond[bafy...almond]
         apple[bafy...apple]
         adobo[bafy...adobo]
         agave[bafy...agave]
@@ -483,7 +483,7 @@ flowchart BT
       coffee[bafy...coffee]
     end
 
-    apple --> gen
+    apple --> almond
     adobo --> apple
     agave --> bagel
     agave --> adobo
@@ -515,7 +515,7 @@ flowchart BT
     baklava ==> chocolate
 
     %% Layout hacks
-        bacon ~~~ gen
+        bacon ~~~ almond
 
     %% Transative Path Styles
         %% baklava -> chocolate -> avodcado
