@@ -539,7 +539,7 @@ Note the direction of the arrows: they point from an event to their antecedent c
 
 #### 4.2.2.1 Parent Nodes
 
-Nodes listed in the [`Causal`] field of a fact are said to be that fact's "parent nodes". A fact MAY have zero or more parents.
+Nodes listed in the [`Cause`] field of a fact are said to be that fact's "parent nodes". A fact MAY have zero or more parents.
 
 ``` mermaid
 flowchart BT
@@ -552,7 +552,7 @@ flowchart BT
 
 #### 4.2.2.2 Child Nodes
 
-Nodes that list a fact is their [`Causal`] field of a fact are said to be that fact's "child nodes". A fact MAY have zero or more children.
+Nodes that list a fact is their [`Cause`] field of a fact are said to be that fact's "child nodes". A fact MAY have zero or more children.
 
 ``` mermaid
 flowchart BT
