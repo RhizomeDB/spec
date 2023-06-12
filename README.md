@@ -449,9 +449,12 @@ Below is a example causal graph from three writers. The grouping in this diagram
 
 ``` mermaid
 flowchart BT
+    classDef genesis fill: blue;
+    classDef head    fill: green;
+
     style Alice fill:#f9f, stroke-width: 0
     subgraph Alice
-        almond[bafy...almond]
+        almond[bafy...almond]:::genesis
         apple[bafy...apple]
         adobo[bafy...adobo]
         agave[bafy...agave]
@@ -462,16 +465,16 @@ flowchart BT
 
     style Bob fill: PaleGoldenRod, stroke-width: 0
     subgraph Bob
-        bacon[bafy...bacon]
+        bacon[bafy...bacon]:::genesis
         bagel[bafy...bagel]
         banana[bafy..banana]
         bean[bafy...bean]
-        berry[bafy...berry]
         bun[bafy...bun]
         brie[bafy...brie]
         butter[bafy...butter]
         brine[bafy...brine]
         baklava[bafy...baklava]
+        berry[bafy...berry]:::head
     end
 
     style Carol fill: DeepSkyBlue, stroke-width: 0
@@ -482,7 +485,7 @@ flowchart BT
       calamari[bafy...calamari]
       carrot[bafy...carrot]
       chocolate[bafy...chocolate]
-      coffee[bafy...coffee]
+      coffee[bafy...coffee]:::head
     end
 
     apple --> almond
@@ -537,29 +540,6 @@ flowchart BT
 
 Note the direction of the arrows: they point from an event to their antecedent cause (i.e. they are pointers like in an EVAC quad). This is sometimes confusing, since we normally reason from cause to effect, but all facts in PomoDB are by their nature "in the causal past". Items in a node's causal history are called its "ancestors". Nodes that depend on a fact are called its "descendants". Graphs MAY be rooted.
 
-#### 4.2.2.1 Parent Nodes
-
-Nodes listed in the [`Cause`] field of a fact are said to be that fact's "parent nodes". A fact MAY have zero or more parents.
-
-``` mermaid
-flowchart BT
-    parentA
-    parentB
-    
-    fact --> parentA
-    fact --> parentB
-```
-
-#### 4.2.2.2 Child Nodes
-
-Nodes that list a fact is their [`Cause`] field of a fact are said to be that fact's "child nodes". A fact MAY have zero or more children.
-
-``` mermaid
-flowchart BT
-    childA --> fact
-    childB --> fact
-```
-
 #### 4.2.2.1 Genesis Nodes
 
 The "earliest" facts in the graph above are `bafy...almond` and `bafy...bacon`, as they have no listed causes. These are called "genesis nodes". In formal terms, these are "causal sinks". These nodes MAY be treated as objectively the earliest in the graph: since as causal information is asserted at write-time, these cannot be earlier, unlisted facts added or discovered later.
@@ -574,7 +554,31 @@ There MUST be at least one head node in an inhabited graph (even if it is a sing
 
 #### 4.2.2.3 Concurrent Nodes
 
-When comparing any two nodes, if one does not appear in the causal history of the other, then they are said to be "concurrent" or "sibling" nodes. As any two causally disjoint graphs are concurrent with each other, most facts are concurrent.
+When comparing any two nodes, if one does not appear in the causal history of the other, then they are said to be "concurrent" or "sibling" nodes. As any two causally disjoint graphs have (by definition) no dependencies on each other, most facts are concurrent.
+
+#### 4.2.2.4 Parent Nodes
+
+Nodes listed in the [`Cause`] field of a fact are said to be that fact's "parent nodes". A fact MAY have zero or more parents.
+
+``` mermaid
+flowchart BT
+    parentA
+    parentB
+    
+    fact --> parentA
+    fact --> parentB
+```
+
+#### 4.2.2.5 Child Nodes
+
+Nodes that list a fact is their [`Cause`] field of a fact are said to be that fact's "child nodes". A fact MAY have zero or more children.
+
+``` mermaid
+flowchart BT
+    childA --> fact
+    childB --> fact
+```
+
 
 # 5 Prior Art
 
