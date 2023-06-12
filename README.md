@@ -491,13 +491,13 @@ flowchart BT
     banana --> bagel
     avocado -----> ambrosia
     cake --> banana
-    cinnamon --> cake
+    cinnamon ==> cake
     cherry --> cinnamon
     calamari ---> cherry
-    carrot ---> calamari
+    carrot ===> calamari
     chocolate --> carrot
-    chocolate --> avocado
-    calamari --> bean
+    chocolate ==> avocado
+    calamari ==> bean
     berry --> brie
     bean --> adobo
     bun --> carrot
@@ -508,29 +508,29 @@ flowchart BT
     brie --> asiago
     asiago ----> avocado
     bean -----> banana
-    ambrosia --> cinnamon
-    cake --> agave
+    ambrosia ==> cinnamon
+    cake ==> agave
     avocado --> calamari
     coffee --> chocolate
-    baklava --> chocolate
+    baklava ==> chocolate
 
     %% Layout hacks
         bacon ~~~ gen
 
     %% Transative Path Styles
         %% baklava -> chocolate -> avodcado
-           linkStyle 13 stroke-width:4px,fill:none,stroke:DodgerBlue;
-           linkStyle 29 stroke-width:4px,fill:none,stroke:DodgerBlue;
+           linkStyle 13 stroke: DodgerBlue;
+           linkStyle 29 stroke: DodgerBlue;
 
         %% calamari -> bean -> adobo
-            linkStyle 11 stroke-width:4px,fill:none,stroke:orange;
-            linkStyle 14 stroke-width:4px,fill:none,stroke:orange;
-            linkStyle 17 stroke-width:4px,fill:none,stroke:orange;
+            linkStyle 11 stroke: orange;
+            linkStyle 14 stroke: orange;
+            linkStyle 17 stroke: orange;
 
         %% ambrosia -> cinnamon -> cake -> agave
-            linkStyle 8 stroke-width:4px,fill:none,stroke:deeppink;
-            linkStyle 25 stroke-width:4px,fill:none,stroke:deeppink;
-            linkStyle 26 stroke-width:4px,fill:none,stroke:deeppink;
+            linkStyle 8  stroke: deeppink;
+            linkStyle 25 stroke: deeppink;
+            linkStyle 26 stroke: deeppink;
 ```
 
 # 5 Prior Art
