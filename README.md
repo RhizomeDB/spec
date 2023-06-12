@@ -384,7 +384,7 @@ flowchart TB
 
 ### 4.1.3 Entity ID
 
-An "entity" is some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
+An "entity" MUST represent some subject in the database that can have an attribute. Since names are not unique (and are in fact an attribute), each entity needs a unique identity. Using a random number of at least 128-bits when generating a fresh entity is is RECOMMENDED.
 
 ``` typescript
 type EntityID = Bytes
@@ -404,7 +404,7 @@ type Attribute
 
 ### 4.1.5 Value
 
-The EDB supports the following primitive value types:
+The EDB MUST support the following primitive value types:
 
 ``` typescript
 type Value
@@ -416,25 +416,160 @@ type Value
   | Bytes
 ```
 
+### 4.1.6 Cause
+
+Causal links MUST be expressed as an unordered set of CIDs, where those CIDs are other PomoDB fact CIDs. CIDs MUST be deduplicated at read time (though deduplicating and sorting at write time is RECOMMENDED).
+
+``` typescript
+type Cause = Set<CID>
+```
+
+## 4.2 Graph Topologies
+
+All relations in PomoDB MAY be expressed in seberal ways, but common terminology around graphs is RECOMMENDED as it is very clear and pictoral.
+
+### 4.2.1 Grouping: Set & Stars
+
+Grouping by entity ID, attribute, or value all produce sets. In graph terms, this is expressed as a "star" or "hub and spoke" topology.
+
+| Role | Description |
+|-------|-------------|
+| Hub | The center of the relation. The item being "grouped by" |
+| Spoke | The thing being related |
+
+Multiple related hubs and spokes are possible:
+
+EXMAPLE HERE
+
+### 4.2.2 Ordering: Causal Graphs
+
+An important order (or "sort") in PomoDB is causal order. This builds up a graph of pointers in the [`Cause`] field.
+
+``` mermaid
+flowchart BT
+    style Alice fill:#f9f, stroke-width: 0
+    subgraph Alice
+        gen[bafy...gen]
+        apple[bafy...apple]
+        adobo[bafy...adobo]
+        agave[bafy...agave]
+        ambrosia[bafy...ambrosia]
+        avocado[bafy...avocado]
+        asiago[bafy...asiago]
+    end
+
+    style Bob fill: PaleGoldenRod, stroke-width: 0
+    subgraph Bob
+        bacon[bafy...bacon]
+        bagel[bafy...bagel]
+        banana[bafy..banana]
+        bean[bafy...bean]
+        berry[bafy...berry]
+        bun[bafy...bun]
+        brie[bafy...brie]
+        butter[bafy...butter]
+        brine[bafy...brine]
+        baklava[bafy...baklava]
+    end
+
+    style Carol fill: DeepSkyBlue, stroke-width: 0
+    subgraph Carol
+      cake[bafy...cake]
+      cinnamon[bafy...cinnamon]
+      cherry[bafy...cherry]
+      calamari[bafy...calamari]
+      carrot[bafy...carrot]
+      chocolate[bafy...chocolate]
+      coffee[bafy...coffee]
+    end
+
+    apple --> gen
+    adobo --> apple
+    agave --> bagel
+    agave --> adobo
+    bagel --> bacon
+    banana --> bagel
+    avocado -----> ambrosia
+    cake --> banana
+    cinnamon --> cake
+    cherry --> cinnamon
+    calamari ---> cherry
+    carrot ---> calamari
+    chocolate --> carrot
+    chocolate --> avocado
+    calamari --> bean
+    berry --> brie
+    bean --> adobo
+    bun --> carrot
+    butter --> bun
+    brine --> butter
+    baklava --> brine
+    brie --> baklava
+    brie --> asiago
+    asiago ----> avocado
+    bean -----> banana
+    ambrosia --> cinnamon
+    cake --> agave
+    avocado --> calamari
+    coffee --> chocolate
+    baklava --> chocolate
+
+    %% Layout hacks
+        bacon ~~~ gen
+
+    %% Transative Path Styles
+        %% baklava -> chocolate -> avodcado
+           linkStyle 13 stroke-width:4px,fill:none,stroke:DodgerBlue;
+           linkStyle 29 stroke-width:4px,fill:none,stroke:DodgerBlue;
+
+        %% calamari -> bean -> adobo
+            linkStyle 11 stroke-width:4px,fill:none,stroke:orange;
+            linkStyle 14 stroke-width:4px,fill:none,stroke:orange;
+            linkStyle 17 stroke-width:4px,fill:none,stroke:orange;
+
+        %% ambrosia -> cinnamon -> cake -> agave
+            linkStyle 8 stroke-width:4px,fill:none,stroke:deeppink;
+            linkStyle 25 stroke-width:4px,fill:none,stroke:deeppink;
+            linkStyle 26 stroke-width:4px,fill:none,stroke:deeppink;
+```
+
 # 5 Prior Art
 
 This is a large amount of prior art in this area. Below are a few resources that were either direct influences, or frequently brought up as comparisons to PomoDB. They are presented here alphabetically:
 
 ## 5.1 [Automerge]
 
+Automerge is a nested CRDT that is capable of representing JSON. The Automerge team have developed many optimizations and demo applications for CRDTs in [Local-First] applications.
+
 ## 5.2 [Berkley Orders of Magnitude][BOOM]
+
+The BOOM project has explored Datalogs for various distributed systems use cases for well over a decade. "Disorderly programming", the [CALM][Keeping CALM] theorem, and [Dedalus] have been major inspirations for PomoDB.
 
 ## 5.3 [Datasette]
 
+Datasette is a tool for exploration, publishing, and managing relational data. A common use case for it is combining data from multiple sources and exploring it in rich interfaces.
+
 ## 5.4 [Datomic] & [Datahike]
+
+Datomic was the first datalog experience for a lot of people. Datahike replicates a subset of the Datomic APIs, but is also able to run in the browser.
 
 ## 5.5 [Mentat]
 
+Mentat is a client-side Datalog that strongly embraces schemaless design (though domain modeling is still encouraged).
+
+> One might say that Mentat’s question is: “What if an SQLite database could store arbitrary relations, for arbitrary consumers, without them having to coordinate an up-front storage-level schema?”
+
 ## 5.6 [Project Cambria]
+
+Cambria is a research project from [Ink & Switch] that attempts to solve JSON schema drift between different applications or versions. While Cambria uses lenses directly on JSON, PomoDB takes a lot of inspiration and expresses similar functionality as datalog rules.
 
 ## 5.7 [RDF]
 
+The Resource Description Framework (or "RDF") is a mature data modeling and datastore specification from the [W3C]. RDF has a very rich ecosystem of tools, and PomoDB draws from a lot of research based on RDF. It has been said that "PomoDB is RDF without formal ontologies and more CRDTs".
+
 ## 5.8 [Soufflé]
+
+At time of writing, Soufflé is one of — if not "the" — premier extended Datalogs. It is very featureful, with numerous additions to overcome limtations in "classical" Datalog that are otherwise limitations for 
 
 <!-- Links -->
 
@@ -450,6 +585,7 @@ This is a large amount of prior art in this area. Below are a few resources that
 [Datahike]: https://github.com/replikativ/datahike
 [Datasette]: https://datasette.io/
 [Datomic]: https://www.datomic.com/
+[Dedalus]: https://dsf.berkeley.edu/papers/datalog2011-dedalus.pdf
 [Deleuze]: https://en.wikipedia.org/wiki/Gilles_Deleuze
 [Eternalism]: https://en.wikipedia.org/wiki/Eternalism_(philosophy_of_time)
 [Fallacies of distributed computing]: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
@@ -459,7 +595,9 @@ This is a large amount of prior art in this area. Below are a few resources that
 [IPFS]: https://ipfs.io
 [IPLD]: https://ipld.io/specs/
 [Keep Calm and CRDT On]: https://www.vldb.org/pvldb/vol16/p856-power.pdf
+[Keeping CALM]: https://arxiv.org/pdf/1901.01930.pdf
 [Laurent Binet]: https://en.wikipedia.org/wiki/Laurent_Binet
+[Local-First]: https://www.inkandswitch.com/local-first/
 [Mentat]: https://mozilla.github.io/mentat/about
 [Named Graphs]: https://en.wikipedia.org/wiki/Named_graph#Named_graphs_and_quads
 [Paul Feyerabend]: https://en.wikipedia.org/wiki/Paul_Feyerabend
@@ -475,15 +613,18 @@ This is a large amount of prior art in this area. Below are a few resources that
 [Soufflé]: https://souffle-lang.github.io/
 [The Seventh Function of Language]: https://fr.wikipedia.org/wiki/La_Septi%C3%A8me_Fonction_du_langage
 [UTF8]: https://www.unicode.org/versions/Unicode15.0.0/
+[W3C]: https://www.w3.org/
 [Wasm Numbers]: https://webassembly.github.io/spec/core/syntax/types.html#syntax-numtype
 [Wasm Opaque Reference Types]: https://webassembly.github.io/spec/core/syntax/types.html#reference-types
 [Wasm Primitive Types]: https://webassembly.github.io/spec/core/appendix/index-types.html
 [WebAssembly]: https://webassembly.org/
 [WebNative File System]: https://github.com/wnfs-wg/spec
 [`Attribute`]: #413-attribute
+[`Cause`]: #416-cause
 [`Entity ID`]: #412-entity-id
 [`Value`]: #414-value
 [content addressing]: #24-content-addressing
+[ink & Switch]: https://www.inkandswitch.com/ 
 [relation]: #22-relation
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
