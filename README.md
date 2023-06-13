@@ -532,7 +532,6 @@ flowchart BT
             linkStyle 8  stroke: deeppink;
             linkStyle 24 stroke: deeppink;
             linkStyle 25 stroke: deeppink;
-
 ```
 
 Note the direction of the arrows: they point from an event to their antecedent cause (i.e. they are pointers like in an EVAC quad). This is sometimes confusing, since we normally reason from cause to effect, but all facts in PomoDB are by their nature "in the causal past". Items in a node's causal history are called its "ancestors". Nodes that depend on a fact are called its "descendants". Graphs MAY be rooted.
