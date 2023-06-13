@@ -494,17 +494,16 @@ flowchart BT
     agave --> adobo
     bagel --> bacon
     banana --> bagel
-    avocado -----> ambrosia
+    avocado ----> ambrosia
     cake --> banana
     cinnamon ==> cake
     cherry --> cinnamon
     calamari --> cherry
     carrot ===> calamari
-    chocolate --> carrot
+    chocolate ---> carrot
     chocolate ==> avocado
     calamari ==> bean
     berry --> brie
-    %% bean --> adobo
     bun ==> carrot
     butter --> bun
     brine --> butter
@@ -527,12 +526,13 @@ flowchart BT
         %% calamari -> bean -> adobo
             linkStyle 11 stroke: orange;
             linkStyle 14 stroke: orange;
-            linkStyle 17 stroke: orange;
+            linkStyle 16 stroke: orange;
 
         %% ambrosia -> cinnamon -> cake -> agave
             linkStyle 8  stroke: deeppink;
+            linkStyle 24 stroke: deeppink;
             linkStyle 25 stroke: deeppink;
-            linkStyle 26 stroke: deeppink;
+
 ```
 
 Note the direction of the arrows: they point from an event to their antecedent cause (i.e. they are pointers like in an EVAC quad). This is sometimes confusing, since we normally reason from cause to effect, but all facts in PomoDB are by their nature "in the causal past". Items in a node's causal history are called its "ancestors". Nodes that depend on a fact are called its "descendants". Graphs MAY be rooted.
@@ -578,11 +578,11 @@ flowchart BT
 
 #### 4.2.2.6 Ancestors & Provenance
 
-A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses.
+A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses. As long as there is an unbroken path from one node to another, it is said to be the "descendent" of its "ancestor". For example, in the above graph, `bafy...avocado` is an ancestor of `bafy...baklava` along the blue path.
 
-Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transatively][transative]. For example, in the graph above `bafy...ambrosia` has no direct link to `bafy...agave`, because there exists a path (shown in pink). The fact that this path crosses writers is immaterial.
+Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transatively][transative]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transative histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
 
-One exception is when some of those ancestors are expected to have different visibility to peers, such as when some facts are encrypted. For example, in the graph above, there is no direct link from heads to the geneses. Instead 
+One exception to avoiding writing redundant links in a causal history when some of those ancestors are expected to have different visibility to peers, such as when some facts are encrypted. 
 
 # 5 Prior Art
 
