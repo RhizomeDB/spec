@@ -432,14 +432,50 @@ All relations in PomoDB MAY be expressed in seberal ways, but common terminology
 
 Grouping by entity ID, attribute, or value all produce sets. In graph terms, this is expressed as a "star" or "hub and spoke" topology.
 
-| Role | Description |
-|-------|-------------|
-| Hub | The center of the relation. The item being "grouped by" |
-| Spoke | The thing being related |
+| Role  | Description                                              |
+|-------|----------------------------------------------------------|
+| Hub   | The center of the relation / the item being "grouped by" |
+| Spoke | The thing being related                                  |
 
-Multiple related hubs and spokes are possible:
+``` mermaid
+flowchart BT
+    sun["☀️"]
 
-EXMAPLE HERE
+    earth["🌏"]
+    saturn["🪐"]
+    alien["👽"]
+    uap["🛸"]
+    meteor["☄️"]
+
+    earth --- sun
+    sun --- saturn
+    alien --- sun
+    sun --- uap
+    meteor --- sun
+```
+
+Multiple related hubs are possible.
+
+``` mermaid
+flowchart BT
+    sun["☀️"]
+
+    earth["🌏"]
+    saturn["🪐"]
+    alien["👽"]
+    uap["🛸"]
+    meteor["☄️"]
+
+    earth --- sun
+    sun --- saturn
+    alien --- sun
+    sun --- uap
+    meteor --- sun
+
+    moon["🌖"] --- earth
+    satelite["🛰️"] --- earth
+    earth --- astro["👩‍🚀"]
+```
 
 ### 4.2.2 Ordering: Causal Graphs
 
