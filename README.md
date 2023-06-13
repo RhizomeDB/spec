@@ -498,14 +498,14 @@ flowchart BT
     cake --> banana
     cinnamon ==> cake
     cherry --> cinnamon
-    calamari ---> cherry
+    calamari --> cherry
     carrot ===> calamari
     chocolate --> carrot
     chocolate ==> avocado
     calamari ==> bean
     berry --> brie
-    bean --> adobo
-    bun --> carrot
+    %% bean --> adobo
+    bun ==> carrot
     butter --> bun
     brine --> butter
     baklava --> brine
@@ -516,16 +516,13 @@ flowchart BT
     ambrosia ==> cinnamon
     cake ==> agave
     avocado --> calamari
-    coffee --> chocolate
+    coffee -----> chocolate
     baklava ==> chocolate
-
-    %% Layout hacks
-        bacon ~~~ almond
 
     %% Transative Path Styles
         %% baklava -> chocolate -> avodcado
            linkStyle 13 stroke: DodgerBlue;
-           linkStyle 29 stroke: DodgerBlue;
+           linkStyle 28 stroke: DodgerBlue;
 
         %% calamari -> bean -> adobo
             linkStyle 11 stroke: orange;
@@ -542,13 +539,13 @@ Note the direction of the arrows: they point from an event to their antecedent c
 
 #### 4.2.2.1 Genesis Nodes
 
-The "earliest" facts in the graph above are `bafy...almond` and `bafy...bacon`, as they have no listed causes. These are called "genesis nodes". In formal terms, these are "causal sinks". These nodes MAY be treated as objectively the earliest in the graph: since as causal information is asserted at write-time, these cannot be earlier, unlisted facts added or discovered later.
+The "earliest" facts in the graph above are `bafy...almond` and `bafy...bacon` (highlighted in blue), as they have no asserted causes. These are called "genesis nodes" (or simply "geneses"). In formal terms, these are "causal sinks". These nodes MAY be treated as objectively the earliest in the graph: since as causal information is asserted at write-time, these cannot be earlier, unlisted facts added or discovered later.
 
 There MUST be at least one genesis node in an inhabited graph (even if it is a single-node graph). There MAY be an unbounded number of concurrent genesis nodes.
 
 #### 4.2.2.2 Head Nodes
 
-The "latest" facts in the above graph are `bafy...berry`, and `bafy...coffee`. These are called "head nodes". In formal terms, these are "causal sources". These nodes are merely subjectively the most recent fact: it is possible that some other facts were written elsewhere, but simply have not arrived at the reader yet. Since more facts MAY be appended to the history at any time.
+The "latest" facts in the above graph are `bafy...berry`, and `bafy...coffee` (highlighted in green). These are called "head nodes", as they have no known descendants at read-time. In formal terms, these are "causal sources". These nodes are merely subjectively the most recent fact: it is possible that some other facts were written elsewhere, but simply have not arrived at the reader yet. Since more facts MAY be appended to the history at any time.
 
 There MUST be at least one head node in an inhabited graph (even if it is a single-node graph). There MAY be an unbounded number of concurrent head nodes.
 
@@ -579,6 +576,13 @@ flowchart BT
     childB --> fact
 ```
 
+#### 4.2.2.6 Ancestors & Provenance
+
+A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses.
+
+Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transatively][transative]. For example, in the graph above `bafy...ambrosia` has no direct link to `bafy...agave`, because there exists a path (shown in pink). The fact that this path crosses writers is immaterial.
+
+One exception is when some of those ancestors are expected to have different visibility to peers, such as when some facts are encrypted. For example, in the graph above, there is no direct link from heads to the geneses. Instead 
 
 # 5 Prior Art
 
@@ -676,4 +680,5 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
+[transative]: https://en.wikipedia.org/wiki/Transitive_relation
 [time]: #22-time
