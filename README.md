@@ -439,13 +439,13 @@ Grouping by entity ID, attribute, or value all produce sets. In graph terms, thi
 
 ``` mermaid
 flowchart BT
-    sun["☀️"]
+    sun(("☀️"))
 
-    earth["🌏"]
-    saturn["🪐"]
-    alien["👽"]
-    uap["🛸"]
-    meteor["☄️"]
+    earth(("🌏"))
+    saturn(("🪐"))
+    alien(("👽"))
+    uap(("🛸"))
+    meteor(("☄️"))
 
     earth --- sun
     sun --- saturn
@@ -458,13 +458,13 @@ Multiple related hubs are possible.
 
 ``` mermaid
 flowchart BT
-    sun["☀️"]
+    sun(("☀️"))
 
-    earth["🌏"]
-    saturn["🪐"]
-    alien["👽"]
-    uap["🛸"]
-    meteor["☄️"]
+    earth(("🌏"))
+    saturn(("🪐"))
+    alien(("👽"))
+    uap(("🛸"))
+    meteor(("☄️"))
 
     earth --- sun
     sun --- saturn
@@ -472,9 +472,9 @@ flowchart BT
     sun --- uap
     meteor --- sun
 
-    moon["🌖"] --- earth
-    satelite["🛰️"] --- earth
-    earth --- astro["👩‍🚀"]
+    moon(("🌖")) --- earth
+    satelite(("🛰️")) --- earth
+    earth --- astro(("👩‍🚀"))
 ```
 
 ### 4.2.2 Ordering: Causal Graphs
