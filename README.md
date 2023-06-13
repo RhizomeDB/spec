@@ -486,11 +486,10 @@ An important order (or "sort") in PomoDB is causal order. This builds up a graph
 Below is a example causal graph from three writers. The grouping in this diagram is not important, but is presented this way here for explanitory purposes. In reality, if two writers commit the same fact to the database with the same causal history, they would be be deduplicated since they would have the same CID.
 
 ``` mermaid
-flowchart BT
+flowchart LR
     classDef genesis fill: blue;
     classDef head    fill: green;
 
-    %% style Alice fill:#f9f, stroke-width: 0
     subgraph Alice
         almond[bafy...almond]:::genesis
         apple[bafy...apple]
@@ -501,7 +500,6 @@ flowchart BT
         asiago[bafy...asiago]
     end
 
-    %% style Bob fill: PaleGoldenRod, stroke-width: 0
     subgraph Bob
         bacon[bafy...bacon]:::genesis
         bagel[bafy...bagel]
@@ -515,7 +513,6 @@ flowchart BT
         berry[bafy...berry]:::head
     end
 
-    %% style Carol fill: DeepSkyBlue, stroke-width: 0
     subgraph Carol
       cake[bafy...cake]
       cinnamon[bafy...cinnamon]
