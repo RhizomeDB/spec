@@ -390,9 +390,11 @@ An "entity" MUST represent some subject in the database that can have an attribu
 type EntityID = Bytes
 ```
 
+Espeically since PomoDB allows for creation IDs without coordination, a real-world entity MAY be represented by multiple entity IDs. This case SHOULD be handed at the query layer by selecting for all relevant entity IDs.
+
 ### 4.1.4 Attribute
 
-Attributes MUST be an integer, double-precision float, UTF8, or binary.
+Attributes MUST be an integer, double-precision float, UTF8 string, or binary:
 
 ``` typescript
 type Attribute
@@ -421,7 +423,7 @@ type Value
 Causal links MUST be expressed as an unordered set of CIDs, where those CIDs are other PomoDB fact CIDs. CIDs MUST be deduplicated at read time (though deduplicating and sorting at write time is RECOMMENDED).
 
 ``` typescript
-type Cause = Set<CID>
+type Cause = Set<Cid>
 ```
 
 ## 4.2 Graph Topologies
@@ -477,7 +479,7 @@ flowchart BT
     earth --- astro(("👩‍🚀"))
 ```
 
-### 4.2.2 Ordering: Causal Graphs
+### 4.2.2 Ordering & Causality
 
 An important order (or "sort") in PomoDB is causal order. This builds up a graph of pointers in the [`Cause`] field.
 
@@ -488,7 +490,7 @@ flowchart BT
     classDef genesis fill: blue;
     classDef head    fill: green;
 
-    style Alice fill:#f9f, stroke-width: 0
+    %% style Alice fill:#f9f, stroke-width: 0
     subgraph Alice
         almond[bafy...almond]:::genesis
         apple[bafy...apple]
@@ -499,7 +501,7 @@ flowchart BT
         asiago[bafy...asiago]
     end
 
-    style Bob fill: PaleGoldenRod, stroke-width: 0
+    %% style Bob fill: PaleGoldenRod, stroke-width: 0
     subgraph Bob
         bacon[bafy...bacon]:::genesis
         bagel[bafy...bagel]
@@ -513,7 +515,7 @@ flowchart BT
         berry[bafy...berry]:::head
     end
 
-    style Carol fill: DeepSkyBlue, stroke-width: 0
+    %% style Carol fill: DeepSkyBlue, stroke-width: 0
     subgraph Carol
       cake[bafy...cake]
       cinnamon[bafy...cinnamon]
