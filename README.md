@@ -49,7 +49,7 @@ Modern environments increasingly involve unstable dynamic network topologies of 
 
 PomoDB addresses the above constraints with query semantics that guarantee eventual consistency between all peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
 
-Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modeling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different purposes (including [mathematics][Pomo Math] and science). The only objective facts in PomoDB are the quads (as statments) themselves, and their claimed [causal ordering][B-Series].
+Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modeling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different purposes (including [mathematics][Pomo Math] and science). The only objective facts in PomoDB are the quads (as statements) themselves, and their claimed [causal ordering][B-Series].
 
 This approach lets one treat access control, latency, and partitions as equivalent, and embrace (not just tolerate) all three. Conceptually there is [one, unchanging, universal database][Eternalism], and various observers merely come to learn of parts of the database (new data, new interpretations) over time. However, like in physics, this is not an instantaneous or evenly distributed process: some observers will learn of data before others, and may interact with asymmetric information. An observer doesn't need to learn of the entire universe to use the database: a subjective view is sufficient for the majority of cases. When stronger consistency  is desired, the relevant observers can synchronize the relevant subset of context.
 
@@ -261,14 +261,14 @@ The data layout stored to disk is the "extensional database" (EDB). This is the 
 
 The primitive types supported by PomoDB MUST be as below. Note that this is at the layer of PomoDB, and the concrete persisted encoding (e.g. JSON, CBOR, Protobuf) MAY be different.
 
-| Name    | Size      | Description | 
-|---------|-----------| -----------| 
-| Boolean | One bit   | A boolean value.
-| Integer | 64-bit    | Signed integer |
-| Double  | 64-bit    | Double-precision floating-point number, as described in [IEEE 754-2019] |
-| String  | Unbounded | [UTF8], including empty strings |
-| Bytes   | Unbounded | Binary octets |
-| CID     | Unbounded | Avoiding the identity hash is RECOMMENDED |
+| Name    | Size      | Description                                                                                                     | 
+|---------|-----------| ----------------------------------------------------------------------------------------------------------------| 
+| Boolean | One bit   | A boolean value.                                                                                                |
+| Integer | 64-bit    | A signed integer.                                                                                               |
+| Double  | 64-bit    | [Double-precision] floating-point number, as described in [IEEE 754-2019]. `NaN`s SHOULD NOT be considered valid. |
+| String  | Unbounded | A [UTF8] strinf. Empty strings MUST be considered valid.                                                        |
+| Bytes   | Unbounded | Zero or more binary octets.                                                                                     |
+| CID     | Unbounded | A [CID]. Avoiding the identity hash is RECOMMENDED.                                                             |
 
 Note that there is no primitive `unit` or `null`. Emulating these constructs in data modeling is NOT RECOMMENDED, as they are semantically anemic and alternative modelings are nearly always available. For example, a common use case for using `null` is unset a field. CRDTs SHOULD use history-preserving tombstoning for this purpose instead.
 
@@ -468,7 +468,7 @@ flowchart BT
     uap(("🛸"))
     meteor(("☄️"))
 
-    earth --- sun
+    earth ------ sun
     sun --- saturn
     alien --- sun
     sun --- uap
@@ -650,11 +650,11 @@ Cambria is a research project from [Ink & Switch] that attempts to solve JSON sc
 
 ## 5.7 [RDF]
 
-The Resource Description Framework (or "RDF") is a mature data modeling and datastore specification from the [W3C]. RDF has a very rich ecosystem of tools, and PomoDB draws from a lot of research based on RDF. It has been said that "PomoDB is RDF without formal ontologies and more CRDTs".
+The Resource Description Framework (or "RDF") is a mature data modeling and data store specification from the [W3C]. RDF has a very rich ecosystem of tools, and PomoDB draws from a lot of research based on RDF. It has been said that "PomoDB is RDF without formal ontologies and more CRDTs".
 
 ## 5.8 [Soufflé]
 
-At time of writing, Soufflé is one of — if not "the" — premier extended Datalogs. It is very featureful, with numerous additions to overcome limtations in "classical" Datalog that are otherwise limitations for 
+At time of writing, Soufflé is one of — if not "the" — premier extended Datalogs. It is very featureful, with numerous additions to overcome limitations in "classical" Datalog that are otherwise limitations for 
 
 <!-- Links -->
 
@@ -672,6 +672,7 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [Datomic]: https://www.datomic.com/
 [Dedalus]: https://dsf.berkeley.edu/papers/datalog2011-dedalus.pdf
 [Deleuze]: https://en.wikipedia.org/wiki/Gilles_Deleuze
+[Double-precision]: https://en.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64
 [Eternalism]: https://en.wikipedia.org/wiki/Eternalism_(philosophy_of_time)
 [Fallacies of distributed computing]: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
 [Fission Codes]: https://fission.codes
@@ -714,5 +715,5 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
-[transative]: https://en.wikipedia.org/wiki/Transitive_relation
 [time]: #22-time
+[transative]: https://en.wikipedia.org/wiki/Transitive_relation

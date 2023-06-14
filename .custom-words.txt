@@ -67,6 +67,7 @@ Krüger
 Kubo
 Mentat
 Mentat’s
+Mentat’s
 Merkle
 Multiplay
 Namespaces
@@ -154,6 +155,7 @@ equijoin
 equijoins
 expede
 expressivity
+featureful
 fn
 frac
 frontends
@@ -177,6 +179,7 @@ mTLS
 memoization
 mno
 ntity
+ontologies
 optimality
 parentA
 parentB
