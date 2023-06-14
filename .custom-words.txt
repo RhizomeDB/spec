@@ -66,8 +66,7 @@ JSON
 Krüger
 Kubo
 Mentat
-Mentat’s
-Mentat’s
+Mentat's
 Merkle
 Multiplay
 Namespaces

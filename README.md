@@ -266,7 +266,7 @@ The primitive types supported by PomoDB MUST be as below. Note that this is at t
 | Boolean | One bit   | A boolean value.                                                                                                |
 | Integer | 64-bit    | A signed integer.                                                                                               |
 | Double  | 64-bit    | [Double-precision] floating-point number, as described in [IEEE 754-2019]. `NaN`s SHOULD NOT be considered valid. |
-| String  | Unbounded | A [UTF8] strinf. Empty strings MUST be considered valid.                                                        |
+| String  | Unbounded | A [UTF8] string. Empty strings MUST be considered valid.                                                        |
 | Bytes   | Unbounded | Zero or more binary octets.                                                                                     |
 | CID     | Unbounded | A [CID]. Avoiding the identity hash is RECOMMENDED.                                                             |
 
