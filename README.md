@@ -27,7 +27,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 # Abstract
 
-PomoDB is a [content-addressable] database. It enables far-edge deployments (such as IoT and consumer devices) by synchronize heterogenous sets of end-to-end encrypted data between peers in an eventually consistent manner.
+PomoDB is a [content-addressable][content addressing] database. It enables far-edge deployments (such as IoT and consumer devices) by synchronizing heterogenous sets of end-to-end encrypted data between peers in an eventually consistent manner.
 
 # 1. Introduction
 
@@ -49,9 +49,9 @@ Modern environments increasingly involve unstable dynamic network topologies of 
 
 PomoDB addresses the above constraints with query semantics that guarantee eventual consistency between all peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
 
-Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modeling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different purposes (including [mathematics][Pomo Math] and science). The only objective facts in PomoDB are the quads (as statements) themselves, and their claimed [causal ordering][B-Series].
+Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modeling data as _subjective_ makes increasing sense. This is a [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different purposes (including [mathematics][Pomo Math] and science). The only objective facts in PomoDB are the quads (as statements) themselves, and their claimed [causal ordering][B-Series].
 
-This approach lets one treat access control, latency, and partitions as equivalent, and embrace (not just tolerate) all three. Conceptually there is [one, unchanging, universal database][Eternalism], and various observers merely come to learn of parts of the database (new data, new interpretations) over time. However, like in physics, this is not an instantaneous or evenly distributed process: some observers will learn of data before others, and may interact with asymmetric information. An observer doesn't need to learn of the entire universe to use the database: a subjective view is sufficient for the majority of cases. When stronger consistency  is desired, the relevant observers can synchronize the relevant subset of context.
+PomoDB's approach enables one to treat access control, latency, and partitions as equivalent, and embrace (not just tolerate) all three. Conceptually there is [one, unchanging, universal database][Eternalism], and various observers merely come to learn of parts of the database (new data, new interpretations) over time. However, like in physics, this is not an instantaneous or evenly distributed process: some observers will learn of data before others, and may interact with asymmetric information. An observer doesn't need to learn of the entire universe to use the database: a subjective view is sufficient for the majority of cases. When stronger consistency  is desired, the relevant observers can synchronize the relevant subset of context.
 
 ## 1.3 Environments
 
@@ -283,7 +283,7 @@ The extensional database MUST only store facts as quads (4-tuples) in EAVC[^spoc
 | **E**ntity ID | `Bytes`       | [Entity ID]                                        |
 | **A**ttribute | [`Attribute`] | The name of the value's relationship to the entity |
 | **V**alue     | [`Value`]     | The (primitive) value being associated             |
-| **C**ausal    | `Set CID`     | Any causal links                                   |
+| **C**auses    | `Set CID`     | Any direct causal links                            |
 
 ``` typescript
 type Fact = {
@@ -440,7 +440,7 @@ Grouping by entity ID, attribute, or value all produce sets. In graph terms, thi
 | Spoke | The thing being related                                  |
 
 ``` mermaid
-flowchart BT
+flowchart RL
     sun(("☀️"))
 
     earth(("🌏"))
@@ -459,7 +459,7 @@ flowchart BT
 Multiple related hubs are possible.
 
 ``` mermaid
-flowchart BT
+flowchart RL
     sun(("☀️"))
 
     earth(("🌏"))
@@ -569,7 +569,7 @@ flowchart RL
             linkStyle 25 stroke: deeppink;
 ```
 
-Note the direction of the arrows: they point from an event to their antecedent cause (i.e. they are pointers like in an EVAC quad). This is sometimes confusing, since we normally reason from cause to effect, but all facts in PomoDB are by their nature "in the causal past". Items in a node's causal history are called its "ancestors". Nodes that depend on a fact are called its "descendants". Graphs MAY be rooted.
+Note the direction of the arrows: they point from an event to their antecedent cause (i.e. they are the directed `cause` pointers in EVAC quads). This is sometimes counterintuitive when first encountered, since we normally reason from cause to effect. However, all facts in PomoDB are by their nature "in the causal past". Items in a node's causal history are called its "ancestors". Nodes that depend on a fact are called its "descendants". Graphs MAY be rooted.
 
 #### 4.2.2.1 Genesis Nodes
 
@@ -717,3 +717,4 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [sources]: #27-sources
 [time]: #22-time
 [transative]: https://en.wikipedia.org/wiki/Transitive_relation
+[Entity ID]: #413-entity-id
