@@ -1,8 +1,12 @@
 AKE
+APIs
 Antijoin
 Arity
+Automerge
 BCD
 BFT
+BT
+Berkley
 Bilinear
 Binet
 Bitswap
@@ -17,6 +21,7 @@ CIDs
 CIDv
 CRDT
 CRDTs
+Cambria
 Cartesian
 DAGs
 DBSP
@@ -26,7 +31,12 @@ DSL
 DSLs
 DSync
 Dataflow
+Datahike
 Datalog
+Datalogs
+Datasette
+Datomic
+Dedalus
 Deleuze
 Dialog's
 EAVC
@@ -36,6 +46,7 @@ EVAC
 Encryptions
 Equijoin
 FPP
+Feyerabend
 Filecoin
 GHI
 Golang
@@ -50,8 +61,12 @@ IPLD
 IPNS
 Invertible
 IoT
+JSON
+JSON
 Krüger
 Kubo
+Mentat
+Mentat’s
 Merkle
 Multiplay
 Namespaces
@@ -67,8 +82,11 @@ PomoLogic's
 PomoRA
 PomoRA's
 Prolog
+Protobuf
 Qri's
+RDF
 RESTful
+RL
 Ramen
 Requestor's
 Roadmap
@@ -76,6 +94,7 @@ Runtime
 SCCs
 SPOC
 Semijoin
+Soufflé
 TLS
 TODO
 TTL
@@ -115,6 +134,7 @@ boolean
 booleans
 cartesian
 checkbox's
+classDef
 cmy
 counterintuitive
 cryptographically
@@ -158,6 +178,8 @@ memoization
 mno
 ntity
 optimality
+parentA
+parentB
 persistence
 pomo
 pqr
@@ -173,8 +195,10 @@ rgb
 roygbiv
 runtime
 runtimes
+schemaless
 semijoin
 semijoins
+sharded
 skyEID
 skyEID
 spoc
@@ -193,8 +217,11 @@ textsf
 th
 timestep
 timesteps
+tombstoning
 topologies
 tradeoff
+transative
+transatively
 ttribute
 tuple's
 unary

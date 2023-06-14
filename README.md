@@ -49,9 +49,9 @@ Modern environments increasingly involve unstable dynamic network topologies of 
 
 PomoDB addresses the above constraints with query semantics that guarantee eventual consistency between all peers with access to the relevant data, but never requires nor assumes full synchronization between clients. This enables PomoDB to act as a sound foundation for globally distributed data with an indeterminate number of transient peers, with varied access patterns, and ever changing access to data.
 
-Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modeling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different purposes (including [mathematics][Pomo Math] and science). The only objective facts in PomoDB are the facts (as stements) themselves, and their claimed [causal ordering][B-Series].
+Historically databases have assumed an objective worldview: there is a single, correct, _objective_ way to look at data. This can be convenient, but is also overly simplistic for many cases. As application state becomes increasingly [distributed][Fallacies of distributed computing], partition-tolerant, private, and remixable, modeling data as _subjective_ makes increasing sense. This is in line with the [postmodern worldview][Postmodernism], which recognizes that there is no one true way to look at things, but rather multiple interpretations that are useful for different purposes (including [mathematics][Pomo Math] and science). The only objective facts in PomoDB are the quads (as statments) themselves, and their claimed [causal ordering][B-Series].
 
-This approach lets one treat access control, latency, and partitions as equivalent, and embrace (not just tollerate) all three. Conceptually there is [one, unchanging, universal database][Eternalism], and various observers merely come to learn of parts of the database (new data, new interpretations) over time. However, like in physics, this is not an instantaneous or evenly distributed process: some observers will learn of data before others, and may interact with asymmetric information. An observer doesn't need to learn of the entire universe to use the database: a subjective view is sufficient for the majority of cases. When stronger consistency  is desired, the relevant observers can synchrnize the relevant subset of context.
+This approach lets one treat access control, latency, and partitions as equivalent, and embrace (not just tolerate) all three. Conceptually there is [one, unchanging, universal database][Eternalism], and various observers merely come to learn of parts of the database (new data, new interpretations) over time. However, like in physics, this is not an instantaneous or evenly distributed process: some observers will learn of data before others, and may interact with asymmetric information. An observer doesn't need to learn of the entire universe to use the database: a subjective view is sufficient for the majority of cases. When stronger consistency  is desired, the relevant observers can synchronize the relevant subset of context.
 
 ## 1.3 Environments
 
@@ -261,7 +261,7 @@ The data layout stored to disk is the "extensional database" (EDB). This is the 
 
 The primitive types supported by PomoDB MUST be as below. Note that this is at the layer of PomoDB, and the concrete persisted encoding (e.g. JSON, CBOR, Protobuf) MAY be different.
 
-| Name    | Size      | Descrition | 
+| Name    | Size      | Description | 
 |---------|-----------| -----------| 
 | Boolean | One bit   | A boolean value.
 | Integer | 64-bit    | Signed integer |
@@ -390,7 +390,7 @@ An "entity" MUST represent some subject in the database that can have an attribu
 type EntityID = Bytes
 ```
 
-Espeically since PomoDB allows for creation IDs without coordination, a real-world entity MAY be represented by multiple entity IDs. This case SHOULD be handed at the query layer by selecting for all relevant entity IDs.
+Especially since PomoDB allows for creation IDs without coordination, a real-world entity MAY be represented by multiple entity IDs. This case SHOULD be handed at the query layer by selecting for all relevant entity IDs.
 
 ### 4.1.4 Attribute
 
@@ -428,7 +428,7 @@ type Cause = Set<Cid>
 
 ## 4.2 Graph Topologies
 
-All relations in PomoDB MAY be expressed in seberal ways, but common terminology around graphs is RECOMMENDED as it is very clear and pictoral.
+All relations in PomoDB MAY be expressed in several ways, but common terminology around graphs is RECOMMENDED as it is very clear and pictorial.
 
 ### 4.2.1 Grouping: Set & Stars
 
@@ -483,7 +483,7 @@ flowchart BT
 
 An important order (or "sort") in PomoDB is causal order. This builds up a graph of pointers in the [`Cause`] field.
 
-Below is a example causal graph from three writers. The grouping in this diagram is not important, but is presented this way here for explanitory purposes. In reality, if two writers commit the same fact to the database with the same causal history, they would be be deduplicated since they would have the same CID.
+Below is a example causal graph from three writers. The grouping in this diagram is not important, but is presented this way here for explanatory purposes. In reality, if two writers commit the same fact to the database with the same causal history, they would be be deduplicated since they would have the same CID.
 
 ``` mermaid
 flowchart RL
@@ -612,7 +612,7 @@ flowchart BT
 
 #### 4.2.2.6 Ancestors & Provenance
 
-A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses. As long as there is an unbroken path from one node to another, it is said to be the "descendent" of its "ancestor". For example, in the above graph, `bafy...avocado` is an ancestor of `bafy...baklava` along the blue path.
+A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses. As long as there is an unbroken path from one node to another, it is said to be the "descendant" of its "ancestor". For example, in the above graph, `bafy...avocado` is an ancestor of `bafy...baklava` along the blue path.
 
 Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transatively][transative]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transative histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
 
