@@ -713,7 +713,6 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [content addressing]: #24-content-addressing
 [ink & Switch]: https://www.inkandswitch.com/ 
 [relation]: #22-relation
-[serialization]: ./pomo_db/serialization.md
 [sinks]: #28-sinks
 [sources]: #27-sources
 [time]: #22-time
