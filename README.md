@@ -12,9 +12,9 @@
 
 ## Dependencies
 
-- [IPLD]
 - [PomoLogic]
 - [PomoRA]
+- [PomoStore]
 - [WebNative File System]
 
 ## Appendices
@@ -589,7 +589,7 @@ When comparing any two nodes, if one does not appear in the causal history of th
 
 #### 4.2.2.4 Parent Nodes
 
-Nodes listed in the [`Cause`] field of a fact are said to be that fact's "parent nodes". A fact MAY have zero or more parents.
+Nodes listed in the [`Cause`] field of a fact are said to be that fact's "parent nodes". A fact MUST have zero or more parents.
 
 ``` mermaid
 flowchart BT
@@ -602,7 +602,7 @@ flowchart BT
 
 #### 4.2.2.5 Child Nodes
 
-Nodes that list a fact is their [`Cause`] field of a fact are said to be that fact's "child nodes". A fact MAY have zero or more children.
+Nodes that list a fact is their [`Cause`] field of a fact are said to be that fact's "child nodes". A fact MUST have zero or more children.
 
 ``` mermaid
 flowchart BT
@@ -690,6 +690,7 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [Pomo Math]: https://link.springer.com/chapter/10.1007/978-3-319-12688-3_68
 [PomoLogic]: https://github.com/RhizomeDB/PomoLogic
 [PomoRA]: https://github.com/RhizomeDB/PomoRA
+[PomoStore]: https://github.com/RhizomeDB/PomoStore
 [Postmodernism]: https://en.wikipedia.org/wiki/Postmodernism
 [Project Cambria]: https://www.inkandswitch.com/cambria/
 [Quinn Wilton]: https://github.com/QuinnWilton
