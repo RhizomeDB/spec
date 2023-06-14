@@ -1,4 +1,4 @@
-# The Postmodern Database (PomoDB) v0.1.0
+# The Postmodern Database (PomoDB) Specification v0.2.0
 
 ## Editors
 
