@@ -37,7 +37,7 @@ PomoDB is a [content-addressable][content addressing] database. It enables far-e
 
 ## 1.1 Motivation
 
-Databases increasingly treat network partitions as unavoidable disturbances to uptime. Many mitigate these situations under a model that either assumes interruptions are bounded in length (e.g. a consensus round), halting operation of disconnected nodes, or accepting data loss of ocnflicting writes on reconnection with a leader node. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability.
+Databases increasingly treat network partitions as unavoidable disturbances to uptime. Many mitigate these situations under a model that either assumes interruptions are bounded in length (e.g. a consensus round), halting operation of disconnected nodes, or accepting data loss of conflicting writes on reconnection with a leader node. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability.
 
 Modern environments increasingly involve unstable dynamic network topologies of heterogenous peers for which common definitions of consistency often do not apply. In this context, continued operation under network partition or when loading data into another application is not just desirable, but enforcing continuous consistency between all peers is a meaningless proposition. This begs the question: what if there was [no concept of "primary site"][A Certain Tendency of the Database Community] and all data were considered subjective relative to the viewer.
 
@@ -565,7 +565,7 @@ There MUST be at least one genesis node in an inhabited graph (even if it is a s
 
 #### 4.2.2.2 Head Nodes
 
-The "latest" facts in the above graph are `bafy...berry`, and `bafy...coffee` (highlighted in green). These are called "head nodes", as they have no known descendants at read-time. In formal terms, these are "causal sources". These nodes are merely subjectively the most recent fact: it is possible that some other facts were written elsewhere, but simply have not arrived at the reader yet. Since more facts MAY be appended to the history at any time, the head MAY be updated, or more concurrent heads added. Despite this, the specific lineage of a particular fact are immutible.
+The "latest" facts in the above graph are `bafy...berry`, and `bafy...coffee` (highlighted in green). These are called "head nodes", as they have no known descendants at read-time. In formal terms, these are "causal sources". These nodes are merely subjectively the most recent fact: it is possible that some other facts were written elsewhere, but simply have not arrived at the reader yet. Since more facts MAY be appended to the history at any time, the head MAY be updated, or more concurrent heads added. Despite this, the specific lineage of a particular fact are immutable.
 
 There MUST be at least one head node in an inhabited graph (even if it is a single-node graph). There MAY be an unbounded number of concurrent head nodes.
 
@@ -640,7 +640,7 @@ The Resource Description Framework (or "RDF") is a mature data modeling and data
 
 ## 5.8 [Soufflé]
 
-At time of writing, Soufflé is one of — if not "the" — premier extended Datalogs. It is very featureful, with numerous additions to overcome limitations in "classical" Datalog that are otherwise limitations for richly modelling data, and working with large static data sets.
+At time of writing, Soufflé is one of — if not "the" — premier extended Datalogs. It is very featureful, with numerous additions to overcome limitations in "classical" Datalog that are otherwise limitations for richly modeling data, and working with large static data sets.
 
 <!-- Links -->
 
