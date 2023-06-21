@@ -591,7 +591,7 @@ When comparing any two nodes, if one does not appear in the causal history of th
 
 #### 4.2.2.4 Parent Nodes
 
-Nodes listed in the [`Cause`] field of a fact are said to be that fact's "parent nodes". A fact MUST have zero or more parents.
+Facts listed in the [`Cause`] field of another fact are said to be that fact's "parent nodes". A fact MUST have zero or more parents.
 
 ``` mermaid
 flowchart BT
@@ -604,7 +604,7 @@ flowchart BT
 
 #### 4.2.2.5 Child Nodes
 
-Nodes that list a fact is their [`Cause`] field of a fact are said to be that fact's "child nodes". A fact MUST have zero or more children.
+Facts that reference another fact in their [`Cause`] field are said to be that fact's "child nodes". A fact MUST have zero or more children.
 
 ``` mermaid
 flowchart BT
@@ -622,7 +622,7 @@ One exception to avoiding writing redundant links in a causal history when some 
 
 # 5 Prior Art
 
-This is a large amount of prior art in this area. Below are a few resources that were either direct influences, or frequently brought up as comparisons to PomoDB. They are presented here alphabetically:
+There is a large amount of prior art in this area. Below are a few resources that were either direct influences, or frequently brought up as comparisons to PomoDB. They are presented here alphabetically:
 
 ## 5.1 [Automerge]
 

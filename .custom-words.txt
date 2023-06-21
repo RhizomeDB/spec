@@ -224,8 +224,6 @@ timesteps
 tombstoning
 topologies
 tradeoff
-transative
-transatively
 ttribute
 tuple's
 unary
