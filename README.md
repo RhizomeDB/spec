@@ -298,13 +298,15 @@ The first three fields (entity, attribute, and value) are analogous to a subject
 
 #### 4.1.2.1 Implicit CID
 
-Each tuple within a fact also has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
+Each fact has an implied [CID][content addressing]. This behaves as an index on all facts. Being derived from the hash of the fact means that the CID can always be rederived.
 
 ``` typescript
 type CidIndex = {[Cid]: Fact}
 ```
 
-As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship (assuming no known hash cycles).
+As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship.[^assuption]
+
+[^assumption]: Assuming a [cryptographic hash function][CHF].
 
 Using the "sky is blue" example above, how would that be updated for the evening?
 
@@ -312,7 +314,7 @@ $$
 \begin{align}
   \textsf{bafy...noon} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{blue}, \emptyset \rangle\\
   \textsf{bafy...sunset} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{orange}, \{ \textsf{bafy...noon} \} \rangle\\
-  \textsf{bafy...night} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
+  \textsf{bafy...midnight} &= \langle \textsf{skyEID}, \textsf{color}, \textsf{black}, \{ \textsf{bafy...sunset} \} \rangle
 \end{align}
 $$
 
@@ -718,3 +720,4 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [time]: #22-time
 [transative]: https://en.wikipedia.org/wiki/Transitive_relation
 [Entity ID]: #413-entity-id
+[CHF]: https://en.wikipedia.org/wiki/Cryptographic_hash_function
