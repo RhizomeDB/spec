@@ -640,7 +640,7 @@ The Resource Description Framework (or "RDF") is a mature data modeling and data
 
 ## 5.8 [Soufflé]
 
-At time of writing, Soufflé is one of — if not "the" — premier extended Datalogs. It is very featureful, with numerous additions to overcome limitations in "classical" Datalog that are otherwise limitations for 
+At time of writing, Soufflé is one of — if not "the" — premier extended Datalogs. It is very featureful, with numerous additions to overcome limitations in "classical" Datalog that are otherwise limitations for richly modelling data, and working with large static data sets.
 
 <!-- Links -->
 
