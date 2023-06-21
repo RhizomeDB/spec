@@ -81,7 +81,7 @@ An n-ary relation contains n-tuples, which can each be written: $\langle a_1: v_
 > 
 > — [Ralph Waldo Emerson], [Circles]
 
-PomoDB does not make direct use of wall clocks, and instead MUST use [causal consistency] based on [hashes][BFT-CRDT] as its first-class ordering mechanism. Facts MUST include any direct "happens after" or "caused by" relationships, which nartually forms a (partition tolerant) partial order on all facts.
+PomoDB does not make direct use of wall clocks, and instead MUST use [causal consistency] based on [hashes][BFT-CRDT] as its first-class ordering mechanism. Facts MUST include any direct "happens after" or "caused by" relationships, which naturally forms a (partition tolerant) partial order on all facts.
 
 ## 2.3 Content Addressing
 
@@ -596,7 +596,7 @@ flowchart BT
 
 A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses. As long as there is an unbroken path from one node to another, it is said to be the "descendant" of its "ancestor". For example, in the above graph, `bafy...avocado` is an ancestor of `bafy...baklava` along the blue path.
 
-Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transitively][transitive]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transative histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
+Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transitively][transitive]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transitive histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
 
 One exception to avoiding writing redundant links in a causal history when some of those ancestors are expected to have different visibility to peers, such as when some facts are encrypted. 
 
