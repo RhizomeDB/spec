@@ -559,7 +559,7 @@ Note the direction of the arrows: they point from an event to their antecedent c
 
 #### 4.2.2.1 Genesis Nodes
 
-The "earliest" facts in the graph above are `bafy...almond` and `bafy...bacon` (highlighted in blue), as they have no asserted causes. These are called "genesis nodes" (or simply "geneses"). In formal terms, these are "causal sinks". These nodes MAY be treated as objectively the earliest in the graph: since as causal information is asserted at write-time, these cannot be earlier, unlisted facts added or discovered later.
+The "earliest" facts in the graph above are `bafy...almond` and `bafy...bacon` (highlighted in blue), as they have no asserted causes. These are called "genesis nodes" (or simply "geneses"). In formal terms, these are "causal sinks". These nodes MAY be treated as objectively the earliest in the graph: causal information is asserted at write-time, so there cannot be earlier, unlisted facts added or discovered later.
 
 There MUST be at least one genesis node in an inhabited graph (even if it is a single-node graph). There MAY be an unbounded number of concurrent genesis nodes.
 
