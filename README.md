@@ -39,7 +39,7 @@ PomoDB is a [content-addressable][content addressing] database. It enables far-e
 
 While existing databases increasingly treat network partitions as unavoidable disturbances to uptime, many mitigate these situations under a model that either assumes they will be bounded in length, or by allowing them to have some or all nodes cease operation. Such techniques are unsuitable for far-edge and local-first applications, where disorder is the norm, network partitions are ubiquitous and unbounded, and there's an uncompromising need for availability.
 
-Modern environments increasingly involve unstable dynamic network topologies of heterogenous peers for which common definitions of consistency often do not apply. In this context, continued operation is not just desirable, but enforcing continuous consistency between all peers is a meaningless proposition. This begs the question: what if there was [no concept of "primary site"][A Certain Tendency of the Database Community] and all data were considered subjective relative to the viewer.
+Modern environments increasingly involve unstable dynamic network topologies of heterogenous peers for which common definitions of consistency often do not apply. In this context, continued operation under network partition or when loading data into another application is not just desirable, but enforcing continuous consistency between all peers is a meaningless proposition. This begs the question: what if there was [no concept of "primary site"][A Certain Tendency of the Database Community] and all data were considered subjective relative to the viewer.
 
 ## 1.2 Approach
 
@@ -55,10 +55,10 @@ PomoDB's approach enables one to treat access control, latency, and partitions a
 
 ## 1.3 Environments
 
-PomoDB is designed to be:
+PomoDB is designed to:
 
 - Run anywhere
-- Transport agnostic
+- Be transport agnostic
 - Operate when disconnected from the network
 
 Of particular interest are operating in browsers, mobile applications, and IoT devices.
