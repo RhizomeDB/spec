@@ -270,7 +270,7 @@ The primitive types supported by PomoDB MUST be as below. Note that this is at t
 | Bytes   | Unbounded | Zero or more binary octets.                                                                                     |
 | CID     | Unbounded | A [CID]. Avoiding the identity hash is RECOMMENDED.                                                             |
 
-Note that there is no primitive `unit` or `null`. Emulating these constructs in data modeling is NOT RECOMMENDED, as they are semantically anemic and alternative modelings are nearly always available. For example, a common use case for using `null` is unset a field. CRDTs SHOULD use history-preserving tombstoning for this purpose instead.
+Note that there is no primitive `unit` or `null`. Emulating these constructs in data modeling is NOT RECOMMENDED, as they are semantically anemic and alternative modelings are nearly always available. For example, a common use case for using `null` is to unset a field. CRDTs SHOULD use history-preserving tombstoning for this purpose instead.
 
 ### 4.1.2 Fact
 
