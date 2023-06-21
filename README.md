@@ -565,7 +565,7 @@ There MUST be at least one genesis node in an inhabited graph (even if it is a s
 
 #### 4.2.2.2 Head Nodes
 
-The "latest" facts in the above graph are `bafy...berry`, and `bafy...coffee` (highlighted in green). These are called "head nodes", as they have no known descendants at read-time. In formal terms, these are "causal sources". These nodes are merely subjectively the most recent fact: it is possible that some other facts were written elsewhere, but simply have not arrived at the reader yet. Since more facts MAY be appended to the history at any time.
+The "latest" facts in the above graph are `bafy...berry`, and `bafy...coffee` (highlighted in green). These are called "head nodes", as they have no known descendants at read-time. In formal terms, these are "causal sources". These nodes are merely subjectively the most recent fact: it is possible that some other facts were written elsewhere, but simply have not arrived at the reader yet. Since more facts MAY be appended to the history at any time, the head MAY be updated, or more concurrent heads added. Despite this, the specific lineage of a particular fact are immutible.
 
 There MUST be at least one head node in an inhabited graph (even if it is a single-node graph). There MAY be an unbounded number of concurrent head nodes.
 
