@@ -139,6 +139,7 @@ checkbox's
 classDef
 cmy
 counterintuitive
+cryptographic
 cryptographically
 dataflow
 datalog

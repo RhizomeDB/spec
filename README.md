@@ -79,51 +79,31 @@ An n-ary relation contains n-tuples, which can each be written: $\langle a_1: v_
 
 > Cause and effect are two sides of one fact.
 > 
-> Ralph Waldo Emerson 
+> — [Ralph Waldo Emerson], [Circles]
 
-PomoDB is a temporal database which internally models the progression of time as data changes, with each batch of data relating to a timestamp, called an epoch.
-
-While epochs MUST be represented as an unsigned integer, runtimes MAY refine this representation in order to capture additional metadata about the progression of time.
-
-All such representations MUST form a partial order, such that subsequent epochs are represented using subsequent timestamps. For example, runtimes MAY represent timestamps using a pair that tracks the iteration count of looping queries in the second component, while comparing these pairs using product order.
-
-The database state is modeled as a function of time and the program under evaluation, and all tuples are associated with the timestamp at which they were computed.
-
-PomoDB timestamps form a logical clock and hold no meaning to any other instances of PomoDB. The static nature of these links means that queries can reason from causes to effects, or from effects to their causes.
+PomoDB does not make direct use of wall clocks, and instead MUST use [causal consistency] based on [hashes][BFT-CRDT] as its first-class ordering mechanism. Facts MUST include any direct "happens after" or "caused by" relationships, which nartually forms a (partition tolerant) partial order on all facts.
 
 ## 2.3 Content Addressing
 
-As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, content addressing scheme is used. Tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
+As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a content addressing scheme is used. Tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
 
 The choice of CIDs as primary key — rather than more familiar choices such as auto incrementing IDs or UUIDs — reflects PomoDB's goals in targeting distributed and decentralized environments, where coordination around the allocation of IDs can't be guaranteed, and where resilience against malicious and byzantine actors is required.
 
-Since content addressing schemes are backed by cryptographically secure hash functions, their use here prevents forgery of IDs by attackers, and guarantees that CID-based dependencies between tuples will always be acyclic.
+Since the content addressing schemes used by PomoDB MUST be backed by cryptographically secure hash functions, their use here prevents forgery of IDs by attackers, and guarantees that CID-based dependencies between tuples will always be acyclic.
 
 These properties further enable [byzantine-fault tolerant CRDTs][BFT-CRDTs].
 
 ## 2.4 Query Engine
 
-PomoDB has no specified high-level query language. An intermediate representation based on datalog is defined instead ([PomoLogic]). Implementations MAY define their own user-facing query language, but they are RECOMMENDED to treat [PomoLogic] as a common compilation target for all such languages.
+PomoDB has no specified high-level query language. An intermediate representation based on Datalog is defined instead ([PomoLogic]). Implementations MAY define their own user-facing query language, but they are RECOMMENDED to treat [PomoLogic] as a common compilation target for all such languages.
 
 An OPTIONAL relational runtime that MAY be compiled from [PomoLogic] is described in [PomoRA]. This can be further optimized with a dataflow runtime for incrementalization.
 
-## 2.5 Evaluation
-
-Evaluation of PomoDB queries proceeds in timesteps ("epochs") which compute a least fixed point over a batch of changes to the database.
-
-The details behind this computation are runtime specific, however all runtimes MUST provide the following additional guarantees.
-
-Each epoch is denoted by the timestamp succeeding the last, and begins by scheduling the program's [sources] for evaluation. These sources MAY run in any order, however any operations over their resulting contents MUST be deferred until their completion.
-
-Upon computing a relation's fixed point, any [sinks] over that relation SHOULD be scheduled to run over the relation's contents, and evaluation of those sinks MUST be completed before evaluating the next epoch.
-
-PomoDB queries MAY be implemented over incremental computations, in which case each epoch is RECOMMENDED to operate over deltas of the database, wherever possible. PomoFlow is an OPTIONAL runtime with such capabilities.
-
-## 2.6 Sources
+## 2.5 Sources
 
 Sources act as ingress points for a PomoDB query, and introduce tuples from the outside world, such as by loading them from a local persistence layer, or by querying them from a remote data source such as [IPFS].
 
-Sources can be queried as if they were [relation]s.
+Sources can be queried as if they were [relation]s. For example, scoping a query to facts from a certain source is possible.
 
 Implementations MAY define their own sources, but sources SHOULD be non-blocking, and are RECOMMENDED to perform any blocking or IO-intensive operations asynchronously.
 
@@ -131,7 +111,7 @@ Sources MAY emit deltas of tuples, if a runtime able to take advantage of increm
 
 Implementations MAY also support user defined sources, such as to facilitate the integration of PomoDB into external systems for persistence or communication.
 
-## 2.7 Sinks
+## 2.6 Sinks
 
 Sinks act as egress points for a PomoDB query, and emit tuples to the outside world for further processing or storage.
 
@@ -304,7 +284,7 @@ Each fact has an implied [CID][content addressing]. This behaves as an index on 
 type CidIndex = {[Cid]: Fact}
 ```
 
-As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship.[^assuption]
+As described in the section on [time], causal relationships are one way of representing order. This is the RECOMMENDED ordering mechanism since including hashes a priori implies a happened-after relationship.[^assumption]
 
 [^assumption]: Assuming a [cryptographic hash function][CHF].
 
@@ -555,7 +535,7 @@ flowchart RL
     coffee -----> chocolate
     baklava ==> chocolate
 
-    %% Transative Path Styles
+    %% Transitive Path Styles
         %% baklava -> chocolate -> avodcado
            linkStyle 13 stroke: DodgerBlue;
            linkStyle 28 stroke: DodgerBlue;
@@ -616,7 +596,7 @@ flowchart BT
 
 A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses. As long as there is an unbroken path from one node to another, it is said to be the "descendant" of its "ancestor". For example, in the above graph, `bafy...avocado` is an ancestor of `bafy...baklava` along the blue path.
 
-Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transatively][transative]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transative histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
+Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transitively][transitive]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transative histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
 
 One exception to avoiding writing redundant links in a causal history when some of those ancestors are expected to have different visibility to peers, such as when some facts are encrypted. 
 
@@ -669,12 +649,15 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [BFT-CRDTs]: https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf
 [BOOM]: http://boom.cs.berkeley.edu/
 [Brooklyn Zelenka]: https://github.com/expede
+[CHF]: https://en.wikipedia.org/wiki/Cryptographic_hash_function
+[Circles]: https://emersoncentral.com/texts/essays-first-series/circles/
 [Datahike]: https://github.com/replikativ/datahike
 [Datasette]: https://datasette.io/
 [Datomic]: https://www.datomic.com/
 [Dedalus]: https://dsf.berkeley.edu/papers/datalog2011-dedalus.pdf
 [Deleuze]: https://en.wikipedia.org/wiki/Gilles_Deleuze
 [Double-precision]: https://en.wikipedia.org/wiki/Double-precision_floating-point_format#IEEE_754_double-precision_binary_floating-point_format:_binary64
+[Entity ID]: #413-entity-id
 [Eternalism]: https://en.wikipedia.org/wiki/Eternalism_(philosophy_of_time)
 [Fallacies of distributed computing]: https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing
 [Fission Codes]: https://fission.codes
@@ -698,6 +681,7 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [Quinn Wilton]: https://github.com/QuinnWilton
 [RDF]: https://en.wikipedia.org/wiki/Resource_Description_Framework
 [RFC 2119]: https://datatracker.ietf.org/doc/html/rfc2119
+[Ralph Waldo Emerson]: https://en.wikipedia.org/wiki/Ralph_Waldo_Emerson
 [Research]: https://github.com/RhizomeDB/research
 [Soufflé]: https://souffle-lang.github.io/
 [The Seventh Function of Language]: https://fr.wikipedia.org/wiki/La_Septi%C3%A8me_Fonction_du_langage
@@ -712,12 +696,11 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [`Cause`]: #416-cause
 [`Entity ID`]: #412-entity-id
 [`Value`]: #414-value
+[causal consistency]: https://en.wikipedia.org/wiki/Causal_consistency
 [content addressing]: #24-content-addressing
 [ink & Switch]: https://www.inkandswitch.com/ 
 [relation]: #22-relation
 [sinks]: #28-sinks
 [sources]: #27-sources
 [time]: #22-time
-[transative]: https://en.wikipedia.org/wiki/Transitive_relation
-[Entity ID]: #413-entity-id
-[CHF]: https://en.wikipedia.org/wiki/Cryptographic_hash_function
+[transitive]: https://en.wikipedia.org/wiki/Transitive_relation
