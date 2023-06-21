@@ -69,6 +69,10 @@ PomoDB can be seen as a maximally-sharded schemaless database, a meta-circular C
 
 # 2. Design
 
+> Simple things should be simple and complex things should be possible.
+>
+> — [Alan Kay]
+
 ## 2.1 Relation
 
 A relation is a set of tuples, where each component of the tuple is called an attribute, and can be referenced by an attribute name.
@@ -85,7 +89,7 @@ PomoDB does not make direct use of wall clocks, and instead MUST use [causal con
 
 ## 2.3 Content Addressing
 
-As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a content addressing scheme is used. Tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
+As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a [content addressing] scheme is used. Tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
 
 The choice of CIDs as primary key — rather than more familiar choices such as auto incrementing IDs or UUIDs — reflects PomoDB's goals in targeting distributed and decentralized environments, where coordination around the allocation of IDs can't be guaranteed, and where resilience against malicious and byzantine actors is required.
 
@@ -644,6 +648,7 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [A Thousand Plateaus: Capitalism and Schizophrenia]: https://en.wikipedia.org/wiki/A_Thousand_Plateaus
 [AMBROSIA]: https://www.microsoft.com/en-us/research/uploads/prod/2018/12/AmbrosiaPaper.pdf
 [Against Method]: https://en.wikipedia.org/wiki/Against_Method
+[Alan Kay]: https://en.wikipedia.org/wiki/Alan_Kay
 [Automerge]: https://automerge.org/
 [B-Series]: https://en.wikipedia.org/wiki/B-theory_of_time 
 [BFT-CRDTs]: https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf
