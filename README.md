@@ -602,8 +602,6 @@ A complete causal history is built up by recursively following parent edges, fro
 
 Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transitively][transitive]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transitive histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
 
-One exception to avoiding writing redundant links in a causal history when some of those ancestors are expected to have different visibility to peers, such as when some facts are encrypted. 
-
 # 5 Prior Art
 
 There is a large amount of prior art in this area. Below are a few resources that were either direct influences, or frequently brought up as comparisons to PomoDB. They are presented here alphabetically:
