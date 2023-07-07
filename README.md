@@ -600,7 +600,7 @@ flowchart BT
 
 A complete causal history is built up by recursively following parent edges, from the node being investigated back to its geneses. As long as there is an unbroken path from one node to another, it is said to be the "descendant" of its "ancestor". For example, in the above graph, `bafy...avocado` is an ancestor of `bafy...baklava` along the blue path.
 
-Only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transitively][transitive]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transitive histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
+As a sensible default, only direct parents SHOULD be listed in a [`Cause`] field, as the complete history is intact [transitively][transitive]. For example, in the graph above, `bafy...ambrosia` has no direct link to `bafy...agave` and `bafy...bun` has no direct link to `bafy...bean` because indirect, transitive histories exists (shown in pink and orange respectively). The fact that this path crosses writers or stores is immaterial.
 
 # 5 Prior Art
 
