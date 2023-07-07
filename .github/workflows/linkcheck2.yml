@@ -9,6 +9,5 @@ jobs:
     - name: mkdocs-link-check
       uses: byrnereese/github-action-mkdocs-link-check@1.0
       with:
-        folder-path: '/'
-        file-path: 'README.md'
+        folder-path: './README.md'
         use-verbose-mode: 'yes'
