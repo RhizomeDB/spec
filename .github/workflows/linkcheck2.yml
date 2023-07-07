@@ -1,0 +1,9 @@
+name: Check Markdown extenral & internal links
+
+on: push
+
+jobs:
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: filiph/linkcheck@2.0.23
