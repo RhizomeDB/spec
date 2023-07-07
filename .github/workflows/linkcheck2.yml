@@ -6,12 +6,5 @@ jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
     steps:
-    - name: Run DeadFinder
-      uses: hahwul/deadfinder@1.3.1
-      id: broken-link
-      with:
-        command: sitemap
-        target: https://www.hahwul.com/sitemap.xml
-
-    - name: Output Handling
-      run: echo '${{ steps.broken-link.outputs.output }}'
+    - name: Markup Link Checker (mlc)
+      uses: becheran/mlc@v0.16.2
