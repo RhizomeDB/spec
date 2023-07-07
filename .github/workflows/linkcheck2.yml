@@ -9,4 +9,4 @@ jobs:
     - name: mkdocs-link-check
       uses: byrnereese/github-action-mkdocs-link-check@1.0
       with:
-        file-path: './README.md'
+        folder-path: './'
