@@ -89,13 +89,13 @@ PomoDB does not make direct use of wall clocks, and instead MUST use [causal con
 
 ## 2.3 Content Addressing
 
-As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a [content addressing] scheme is used. Tuples are associated with a CID computed from their structure. The details behind this computation are available in [serialization].
+As PomoDB is intended for use in distributed and decentralized deployments, it is important ensure the use of collision resistant identifiers when referring to tuples. For this purpose, a [content addressing] scheme is used. Tuples are associated with a CID computed from their structure. The details behind this computation are available in the section on [facts].
 
 The choice of CIDs as primary key — rather than more familiar choices such as auto incrementing IDs or UUIDs — reflects PomoDB's goals in targeting distributed and decentralized environments, where coordination around the allocation of IDs can't be guaranteed, and where resilience against malicious and byzantine actors is required.
 
 Since the content addressing schemes used by PomoDB MUST be backed by cryptographically secure hash functions, their use here prevents forgery of IDs by attackers, and guarantees that CID-based dependencies between tuples will always be acyclic.
 
-These properties further enable [byzantine-fault tolerant CRDTs][BFT-CRDTs].
+These properties further enable [byzantine-fault tolerant CRDTs][BFT-CRDT].
 
 ## 2.4 Query Engine
 
@@ -249,7 +249,7 @@ The primitive types supported by PomoDB MUST be as below. Note that this is at t
 |---------|-----------| ----------------------------------------------------------------------------------------------------------------| 
 | Boolean | One bit   | A boolean value.                                                                                                |
 | Integer | 64-bit    | A signed integer.                                                                                               |
-| Double  | 64-bit    | [Double-precision] floating-point number, as described in [IEEE 754-2019]. `NaN`s SHOULD NOT be considered valid. |
+| Double  | 64-bit    | [Double-precision] floating-point number, as described in [IEEE 754-2019][Double-precision]. `NaN`s SHOULD NOT be considered valid. |
 | String  | Unbounded | A [UTF8] string. Empty strings MUST be considered valid.                                                        |
 | Bytes   | Unbounded | Zero or more binary octets.                                                                                     |
 | CID     | Unbounded | A [CID]. Avoiding the identity hash is RECOMMENDED.                                                             |
@@ -649,10 +649,11 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [Alan Kay]: https://en.wikipedia.org/wiki/Alan_Kay
 [Automerge]: https://automerge.org/
 [B-Series]: https://en.wikipedia.org/wiki/B-theory_of_time 
-[BFT-CRDTs]: https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf
+[BFT-CRDT]: https://martin.kleppmann.com/papers/bft-crdt-papoc22.pdf
 [BOOM]: http://boom.cs.berkeley.edu/
 [Brooklyn Zelenka]: https://github.com/expede
 [CHF]: https://en.wikipedia.org/wiki/Cryptographic_hash_function
+[CID]: https://docs.ipfs.tech/concepts/content-addressing/
 [Circles]: https://emersoncentral.com/texts/essays-first-series/circles/
 [Datahike]: https://github.com/replikativ/datahike
 [Datasette]: https://datasette.io/
@@ -701,6 +702,7 @@ At time of writing, Soufflé is one of — if not "the" — premier extended Dat
 [`Value`]: #414-value
 [causal consistency]: https://en.wikipedia.org/wiki/Causal_consistency
 [content addressing]: #24-content-addressing
+[facts]: #412-fact
 [ink & Switch]: https://www.inkandswitch.com/ 
 [relation]: #22-relation
 [sinks]: #28-sinks
