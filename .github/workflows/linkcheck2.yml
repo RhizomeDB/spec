@@ -1,4 +1,4 @@
-name: Check Markdown extenral & internal links
+name: Check Markdown external & internal links
 
 on: push
 
@@ -6,4 +6,12 @@ jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
     steps:
-    - uses: filiph/linkcheck@2.0.23
+    - name: Run DeadFinder
+      uses: hahwul/deadfinder@1.3.1
+      id: broken-link
+      with:
+        command: sitemap
+        target: https://www.hahwul.com/sitemap.xml
+
+    - name: Output Handling
+      run: echo '${{ steps.broken-link.outputs.output }}'
