@@ -85,7 +85,7 @@ An n-ary relation contains n-tuples, which can each be written: $\langle a_1: v_
 > 
 > — [Ralph Waldo Emerson], [Circles]
 
-PomoDB does not make direct use of wall clocks, and instead MUST use [causal consistency] based on [hashes][BFT-CRDT] as its first-class ordering mechanism. Facts MUST include any direct "happens after" or "caused by" relationships, which naturally forms a (partition tolerant) partial order on all facts.
+PomoDB does not make direct use of wall clocks, and instead MUST use [causal consistency] based on [hashes][BFT-CRDTs] as its first-class ordering mechanism. Facts MUST include any direct "happens after" or "caused by" relationships, which naturally forms a (partition tolerant) partial order on all facts.
 
 ## 2.3 Content Addressing
 
